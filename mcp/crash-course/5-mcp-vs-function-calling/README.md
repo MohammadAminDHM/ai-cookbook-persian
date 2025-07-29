@@ -1,27 +1,26 @@
-[نسخهٔ فارسی](README.fa.md)
-## Part 4: Comparing MCP to Traditional Approaches
+## قسمت 4: مقایسه MCP با رویکردهای سنتی
 
-### Side-by-Side Comparison
+### مقایسه جانبی
 
-Let's compare our MCP implementation to a traditional function-calling approach in `function-calling.py`
+بیایید اجرای MCP ما را با یک رویکرد عملکرد سنتی در `function-calling.py` مقایسه کنیم.
 
-At this small scale, the traditional approach is simpler. The key differences become apparent when:
+در این مقیاس کوچک ، رویکرد سنتی ساده تر است.تفاوت های کلیدی وقتی آشکار می شود:
 
-1. **Scale increases**: With dozens of tools, the MCP approach provides better organization
-2. **Reuse matters**: The MCP server can be used by multiple clients and applications
-3. **Distribution is needed**: MCP provides standard mechanisms for remote operation
+1. ** مقیاس افزایش می یابد **: با ده ها ابزار ، رویکرد MCP سازمان بهتری را فراهم می کند
+2. ** موارد استفاده مجدد **: سرور MCP توسط چندین مشتری و برنامه ها قابل استفاده است
+3. ** توزیع مورد نیاز است **: MCP مکانیسم های استاندارد برای عملکرد از راه دور را فراهم می کند
 
-### When to Use MCP vs. Traditional Approaches
+### چه زمانی از MCP در مقابل رویکردهای سنتی استفاده کنید
 
-**Consider MCP when**:
+** MCP را در هنگام ** در نظر بگیرید:
 
-- You need to share tool implementations across multiple applications
-- You're building a distributed system with components on different machines
-- You want to leverage existing MCP servers from the ecosystem
-- You're building a product where standardization provides user benefits
+- شما باید اجرای ابزار را در چندین برنامه به اشتراک بگذارید
+- شما در حال ساخت یک سیستم توزیع شده با اجزای دستگاه های مختلف هستید
+- شما می خواهید سرورهای MCP موجود را از اکوسیستم استفاده کنید
+- شما در حال ساخت محصولی هستید که در آن استاندارد سازی مزایای کاربر را فراهم می کند
 
-**Traditional approaches may be better when**:
+** رویکردهای سنتی ممکن است بهتر باشد **:
 
-- You have a simpler, self-contained application
-- Performance is critical (direct function calls have less overhead)
-- You're early in development and rapid iteration is more important than standardization
+- شما یک کاربرد ساده تر و دارای خود دارید
+- عملکرد بسیار مهم است (تماس های عملکرد مستقیم از سربار کمتری برخوردار هستند)
+- شما در اوایل توسعه هستید و تکرار سریع از استاندارد سازی مهمتر است

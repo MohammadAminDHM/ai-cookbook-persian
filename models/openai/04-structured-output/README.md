@@ -1,132 +1,130 @@
-[نسخهٔ فارسی](README.fa.md)
-# Structured Output in LLM Applications
+# خروجی ساختاری در برنامه های LLM
 
-When working with the OpenAI API directly, you have two main options for obtaining structured output responses from GPT models: JSON mode and Function calling. While both are powerful tools, they also have their limitations. Understanding when to use each can enhance your workflow and give you more control over the output. After learning about these two methods, we'll dive into [Instructor](https://github.com/daveebbelaar/python-openai-tutorial/tree/main/04%20Structured%20Output/Instructor) to gain even greater control over the output from OpenAI's models. Instructor was covered in this great ["Pydantic is all you need"](https://www.youtube.com/watch?v=yj-wSRJwrrc) talk by Jason Liu.
+هنگام کار با API OpenAI به طور مستقیم ، شما دو گزینه اصلی برای به دست آوردن پاسخ های خروجی ساختاری از مدل های GPT دارید: حالت JSON و تماس با عملکرد.در حالی که هر دو ابزار قدرتمند هستند ، اما محدودیت های خود را نیز دارند.درک اینکه چه زمانی از هر کدام استفاده می شود می تواند گردش کار شما را تقویت کرده و کنترل بیشتری بر روی خروجی به شما بدهد.پس از یادگیری در مورد این دو روش ، ما به [مربی] (https://github.com/daveebbelaar/python-openai-tutorial/tree/04٪20structured٪20output/instructor) شیرجه می شویم تا کنترل بیشتری از مدل های OpenAi داشته باشیم.مربی در این بزرگ پوشیده شده بود ["Pydantic همه چیز شما نیاز دارید"] (https://www.youtube.com/watch؟v=yj-wsrjwrrc) صحبت های جیسون لیو.
 
-## Why Use JSON Output?
+## چرا از خروجی JSON استفاده می کنید؟
 
-Using JSON output in your LLM applications provides more control and validation over the generated responses. It ensures that the output is always a valid JSON string, making it easier to parse and process the data in your application.
+استفاده از خروجی JSON در برنامه های LLM شما کنترل و اعتبار بیشتری را در پاسخ های تولید شده فراهم می کند.این تضمین می کند که خروجی همیشه یک رشته معتبر JSON است و باعث می شود تجزیه و پردازش داده ها در برنامه شما آسانتر شود.
 
-## JSON Mode
+## حالت json
 
-In [JSON mode](https://platform.openai.com/docs/guides/text-generation/json-mode), the model generates outputs exclusively formatted as valid JSON strings. However, you need to explicitly specify the desired JSON structure within the system prompt to guide the model towards the expected format.
+در [حالت JSON] (https://platform.openai.com/docs/guides/text-generation/json-mode) ، این مدل خروجی ها را به طور انحصاری به عنوان رشته های معتبر JSON تولید می کند.با این حال ، شما باید صریحاً ساختار JSON مورد نظر را در فوری سیستم مشخص کنید تا مدل را به سمت قالب مورد انتظار راهنمایی کنید.
 
-Here's an example of using JSON mode:
+در اینجا مثالی از استفاده از حالت JSON آورده شده است:
 
-```python
-query = "Hi there, I have a question about my bill. Can you help me?"
+`` `پایتون
+query = "سلام ، من در مورد صورتحساب خود سوالی دارم. آیا می توانید به من کمک کنید؟"
 
-messages = [
-    {
-        "role": "system",
-        "content": """
-        You're a helpful customer care assistant that can classify incoming messages and create a response.
-        Always response in the following JSON format: {"content": <response>, "category": <classification>}
-        Available categories: 'general', 'order', 'billing'
-        """,
-    },
-    {
-        "role": "user",
-        "content": query,
-    },
+پیام = [
+{
+"نقش": "سیستم" ،
+"محتوا": "" "
+شما یک دستیار مفید مراقبت از مشتری هستید که می تواند پیام های دریافتی را طبقه بندی کرده و پاسخی ایجاد کند.
+همیشه در فرمت JSON زیر پاسخ دهید: {"محتوا": <Pensponse> ، "دسته": <طبقه بندی>
+دسته های موجود: "عمومی" ، "سفارش" ، "صورتحساب"
+"" "،
+} ،
+{
+"نقش": "کاربر" ،
+"محتوا": پرس و جو ،
+} ،
 ]
 
-response = client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=messages,
-    response_format={"type": "json_object"},
+پاسخ = client.chat.completions.create (
+model = "GPT-3.5-turbo" ،
+پیام = پیام ،
+پاسخ_فورمات = {"نوع": "json_object"} ،
 )
-message = response.choices[0].message.content
+پیام = پاسخ. انتخاب [0] .Message.Content
 
-type(message)  # str
+تایپ (پیام) # str
 
-message_json = json.loads(message)
-type(message_json)  # dict
-```
+message_json = json.loads (پیام)
+تایپ کنید (پیام_جسون) # دیکته
+`` `
 
-It's important to note that OpenAI does not guarantee that the output text will have your specified JSON format. It only ensures that the output will be a valid string that can be parsed to JSON.
+توجه به این نکته حائز اهمیت است که OpenAI تضمین نمی کند که متن خروجی فرمت JSON مشخص شده شما را داشته باشد.این فقط تضمین می کند که خروجی یک رشته معتبر خواهد بود که می تواند برای JSON تجزیه شود.
 
-### API Reference
+### مرجع API
 
-- `response_format`: An object specifying the format that the model must output. Compatible with GPT-4 Turbo and all GPT-3.5 Turbo models newer than gpt-3.5-turbo-1106. Setting to `{"type": "json_object"}` enables JSON mode, which guarantees the message the model generates is valid JSON.
+- `Response_Format`: یک شیء را مشخص می کند که مدل باید از آن خارج شود.سازگار با GPT-4 توربو و تمام مدل های GPT-5.5 توربو جدیدتر از GPT-3.5-Turbo-1106.تنظیم روی `{" نوع ":" json_object "}` حالت JSON را فعال می کند ، که پیامی را که مدل ایجاد می کند تضمین می کند JSON معتبر است.
 
-Important: When using JSON mode, you must also instruct the model to produce JSON yourself via a system or user message. Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request. Also note that the message content may be partially cut off if `finish_reason="length"`, which indicates the generation exceeded `max_tokens` or the conversation exceeded the max context length.
+مهم: هنگام استفاده از حالت JSON ، شما همچنین باید به مدل دستور دهید که JSON خود را از طریق یک سیستم یا پیام کاربر تولید کند.بدون این ، مدل ممکن است یک جریان بی پایان از فضای سفید ایجاد کند تا اینکه نسل به حد توکن برسد و در نتیجه درخواست طولانی و به ظاهر "گیر" ایجاد شود.همچنین توجه داشته باشید که اگر "Finish_Reason =" طول "، محتوای پیام تا حدی قطع شود ، که نشان می دهد نسل بیش از" max_tokens "یا مکالمه از طول متن حداکثر فراتر رفته است.
 
-## Function Calling
+## تماس عملکرد
 
-[Function Calling](https://platform.openai.com/docs/guides/function-calling) allows you to provide a list of functions that the model can call. You can specify the function name, description, and parameters, including their types and required fields. You can find more examples in this [Cookbook](https://cookbook.openai.com/examples/how_to_call_functions_with_chat_models).
+[فراخوانی عملکرد] (https://platform.openai.com/docs/guides/function-calling) به شما امکان می دهد لیستی از توابع را که مدل می تواند با آن تماس بگیرد ، تهیه کنید.می توانید نام عملکرد ، توضیحات و پارامترها ، از جمله انواع آنها و زمینه های مورد نیاز را مشخص کنید.می توانید نمونه های بیشتری را در این [Cookbook] (https://cookbook.openai.com/examples/how_to_call_functions_with_chat_models) پیدا کنید.
 
-Here's an example of using function calling:
+در اینجا مثالی از استفاده از عملکرد فراخوانی آورده شده است:
 
-```python
-query = "Hi there, I have a question about my bill. Can you help me?"
+`` `پایتون
+query = "سلام ، من در مورد صورتحساب خود سوالی دارم. آیا می توانید به من کمک کنید؟"
 
-function_name = "chat"
+function_name = "گپ"
 
-tools = [
-    {
-        "type": "function",
-        "function": {
-            "name": function_name,
-            "description": f"Function to respond to a customer query.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "content": {
-                        "type": "string",
-                        "description": "Your reply that we send to the customer.",
-                    },
-                    "category": {
-                        "type": "string",
-                        "enum": ["general", "order", "billing"],
-                        "description": "Category of the ticket.",
-                    },
-                },
-                "required": ["content", "category"],
-            },
-        },
-    }
+ابزار = [
+{
+"نوع": "عملکرد" ،
+"عملکرد": {
+"نام": function_name ،
+"توضیحات": F "عملکرد برای پاسخ به پرس و جو مشتری."
+"پارامترها": {
+"نوع": "شی" ،
+"خواص": {
+"محتوا": {"نوع": "رشته" ،
+"توضیحات": "پاسخ شما که به مشتری می فرستیم." ،
+} ،
+"دسته": {
+"نوع": "رشته" ،
+"enum": ["عمومی" ، "سفارش" ، "صورتحساب"] ،
+"توضیحات": "دسته بلیط." ،
+} ،
+} ،
+"مورد نیاز": ["محتوا" ، "دسته"] ،
+} ،
+} ،
+}
 ]
 
-messages = [
-    {
-        "role": "system",
-        "content": "You're a helpful customer care assistant that can classify incoming messages and create a response.",
-    },
-    {
-        "role": "user",
-        "content": query,
-    },
+پیام = [
+{
+"نقش": "سیستم" ،
+"محتوا": "شما یک دستیار مفید مراقبت از مشتری هستید که می تواند پیام های دریافتی را طبقه بندی کرده و پاسخی ایجاد کند."
+} ،
+{
+"نقش": "کاربر" ،
+"محتوا": پرس و جو ،
+} ،
 ]
 
-response = client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=messages,
-    tools=tools,
-    tool_choice={"type": "function", "function": {"name": function_name}},
+پاسخ = client.chat.completions.create (
+model = "GPT-3.5-turbo" ،
+پیام = پیام ،
+ابزار = ابزار ،
+tool_choice = {"نوع": "تابع" ، "عملکرد": {"نام": function_name}} ،
 )
 
-tool_call = response.choices[0].message.tool_calls[0]
-type(tool_call)  # ChatCompletionMessageToolCall
+tool_call = پاسخ. انتخاب [0] .message.tool_calls [0]
+(Tool_call) # chatcompletionmessagetoolcall را تایپ کنید
 
-function_args = json.loads(tool_call.function.arguments)
-type(function_args)  # dict
-```
+function_args = json.loads (tool_call.function.arguments)
+Type (function_args) # دیکته
+`` `
 
-### API Reference
+### مرجع API
 
-- `tools`: A list of tools the model may call. Currently, only functions are supported as a tool. Use this to provide a list of functions the model may generate JSON inputs for. A max of 128 functions are supported.
+- `Tools`: لیستی از ابزارهایی که ممکن است مدل با آن تماس بگیرد.در حال حاضر ، فقط توابع به عنوان ابزاری پشتیبانی می شوند.از این استفاده کنید تا لیستی از کارکردهایی که مدل ممکن است ورودی های JSON را برای آن ایجاد کند ، استفاده کنید.حداکثر 128 کارکرد پشتیبانی می شود.
 
-- `tool_choice`: Controls which (if any) tool is called by the model. `none` means the model will not call any tool and instead generates a message. `auto` means the model can pick between generating a message or calling one or more tools. `required` means the model must call one or more tools. Specifying a particular tool via `{"type": "function", "function": {"name": "my_function"}}` forces the model to call that tool. `none` is the default when no tools are present. `auto` is the default if tools are present.
+- `tool_choice`: کنترل هایی که (در صورت وجود) توسط مدل نامیده می شود.`هیچ یک به این معنی است که مدل هیچ ابزاری را صدا نمی کند و در عوض پیامی ایجاد می کند.`auto` به این معنی است که مدل می تواند بین تولید پیام یا تماس با یک یا چند ابزار انتخاب کند.`مورد نیاز" به این معنی است که مدل باید با یک یا چند ابزار تماس بگیرد.مشخص کردن یک ابزار خاص از طریق `{" نوع ":" عملکرد "،" عملکرد ": {" نام ":" my_function "}}` مدل را مجبور می کند تا آن ابزار را فراخوانی کند."هیچ یک" پیش فرض نیست که هیچ ابزاری وجود نداشته باشد.اگر ابزارها وجود داشته باشند ، `auto` پیش فرض است.
 
-## When to Use Each Approach
+## چه زمانی از هر روش استفاده می شود
 
-1. **Function Calling**: If your use case can be framed to use function calling, it is recommended to use it. OpenAI will automatically optimize your prompt according to the specified functions, and the language models were trained with this prompt format. This increases the likelihood of better responses and reduces the frequency of hallucinations. Additionally, the response comes parsed in `ChatCompletionMessageToolCall` objects, which is convenient.
+1. ** فراخوانی عملکرد **: اگر مورد استفاده شما برای استفاده از تماس با عملکرد قاب می شود ، توصیه می شود از آن استفاده کنید.OpenAI به طور خودکار سریع شما را با توجه به توابع مشخص شده بهینه می کند و مدل های زبان با این فرمت سریع آموزش داده می شوند.این احتمال پاسخ های بهتر را افزایش داده و فرکانس توهم را کاهش می دهد.علاوه بر این ، این پاسخ در اشیاء «چتکومپتیکتولکال» تجزیه می شود ، که راحت است.
 
-2. **JSON Mode**: JSON mode is a more flexible capability that forces the LLM to always output a valid JSON string, but the JSON structure is arbitrary. It's useful when you need JSON output but don't want to specify the exact structure.
+2. ** حالت JSON **: حالت JSON یک قابلیت انعطاف پذیر تر است که LLM را مجبور می کند همیشه یک رشته JSON معتبر را وارد کند ، اما ساختار JSON دلخواه است.وقتی به خروجی JSON نیاز دارید مفید است اما نمی خواهید ساختار دقیق را مشخص کنید.
 
-Keep in mind that the LLM can still hallucinate in both approaches. In function calling, the LLM may ignore your instructions and output free-form text instead of using functions, or it may hallucinate argument names and values. In JSON mode, the LLM always produces JSON, but the specified format may not be respected.
+به خاطر داشته باشید که LLM هنوز هم می تواند در هر دو رویکرد توهم کند.در تماس با عملکرد ، LLM ممکن است به جای استفاده از توابع ، دستورالعمل ها و متن آزاد را از بین ببرد ، یا ممکن است نام و مقادیر آرگومان را توهم کند.در حالت JSON ، LLM همیشه JSON تولید می کند ، اما قالب مشخص شده ممکن است رعایت نشود.
 
-## Conclusion
+## نتیجه گیری
 
-Both JSON mode and function calling are valuable tools for obtaining structured output from LLM applications. Function calling provides more control and is recommended when possible, while JSON mode offers flexibility when the exact structure is not critical. However, if you want even more control over your outputs, [Instructor](https://github.com/daveebbelaar/python-openai-tutorial/tree/main/04%20Structured%20Output/Instructor) is the way to go.
+هر دو حالت JSON و فراخوان عملکرد ابزاری با ارزش برای به دست آوردن خروجی ساختاری از برنامه های LLM هستند.فراخوانی عملکرد کنترل بیشتری را فراهم می کند و در صورت امکان توصیه می شود ، در حالی که حالت JSON در صورت عدم اهمیت ساختار ، انعطاف پذیری را ارائه می دهد.با این حال ، اگر می خواهید کنترل بیشتری بر روی خروجی های خود داشته باشید ، [مربی] (https://github.com/daveebbelaar/python-openai-tutorial/tree/main/04٪20structured٪20output/instructor) راهی برای رفتن است.

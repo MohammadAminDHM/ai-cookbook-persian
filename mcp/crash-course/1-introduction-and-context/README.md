@@ -1,28 +1,27 @@
-[نسخهٔ فارسی](README.fa.md)
-# MCP Crash Course for Python Developers
+# دوره تصادف MCP برای توسعه دهندگان پایتون
 
-## Part 1: Introduction & Context
+## قسمت 1: مقدمه و زمینه
 
-### The MCP Hype vs. Reality
+### HYPE MCP در مقابل واقعیت
 
-The Model Context Protocol (MCP) has been generating lots of hype in the AI community lately, and for good reason. It represents a standardized way for LLMs to interact with external tools and services. But with all the excitement, it's important to cut through the hype and understand what MCP really is.
+پروتکل زمینه Model (MCP) اخیراً در جامعه هوش مصنوعی اعتیاد به مواد مخدره زیادی ایجاد کرده است و به دلایل خوبی.این یک روش استاندارد برای تعامل LLMS با ابزارها و خدمات خارجی است.اما با تمام هیجان ، مهم است که اعتیاد به مواد مخدره را از بین ببرید و درک کنید که MCP واقعاً چیست.
 
-MCP isn't revolutionary new technology - it's a (potentially) revolutionary new standard. If you've been working with AI systems/agents for any length of time, you've already been implementing the core concept: giving LLMs access to tools through function calling. What's different is that MCP provides a standardized protocol for these interactions.
+MCP فناوری جدید انقلابی نیست - این یک استاندارد جدید انقلابی (بالقوه) است.اگر برای هر مدت زمان با سیستم های هوش مصنوعی/Agents کار کرده اید ، قبلاً مفهوم اصلی را اجرا کرده اید: دسترسی LLMS به ابزارها از طریق تماس با عملکرد.آنچه متفاوت است این است که MCP یک پروتکل استاندارد برای این تعامل ارائه می دهد.
 
-You may have seen demos showcasing how to integrate MCP servers with Claude Desktop or other AI assistants. While this is certainly a paradigm shift for personal AI, that's not our focus today. Instead, we're looking at how Python developers can build custom MCP servers and integrate them into production applications and agent systems.
+شما ممکن است نمایشی را نشان دهید که نحوه ادغام سرورهای MCP را با دسک تاپ Claude یا سایر دستیاران هوش مصنوعی نشان می دهد.در حالی که مطمئناً این یک تغییر پارادایم برای هوش مصنوعی شخصی است ، اما امروز تمرکز ما نیست.در عوض ، ما در حال بررسی این هستیم که چگونه توسعه دهندگان پایتون می توانند سرورهای MCP سفارشی بسازند و آنها را در برنامه های تولید و سیستم های عامل ادغام کنیم.
 
-### Bridging the Gap
+### پل زدن شکاف
 
-There's a clear distinction between:
+تمایز مشخصی بین:
 
-1. **Personal MCP use** - Integrating servers with Claude Desktop, Cursor, or other personal AI assistants
-2. **Backend integration** - Building MCP into your Python applications and agent systems
+1. ** MCP شخصی استفاده ** - ادغام سرورها با دسک تاپ کلود ، مکان نما یا سایر دستیاران هوش مصنوعی شخصی
+2.. ** ادغام پس زمینه ** - ساختمان MCP در برنامه های پایتون و سیستم های عامل خود
 
-Most tutorials online cover the first case, showing you how to enhance your personal AI tools. This is valuable, but leaves a gap for developers building production systems who need to understand the deeper technical aspects of working with MCP in their Python applications.
+بیشتر آموزش های آنلاین مورد اول را پوشش می دهد ، به شما نشان می دهد که چگونه می توانید ابزارهای شخصی شخصی خود را ارتقا دهید.این ارزشمند است ، اما شکافی را برای توسعه دهندگان سیستم های تولیدی ایجاد می کند که باید جنبه های فنی عمیق تر کار با MCP را در برنامه های پایتون خود درک کنند.
 
-In this crash course, we're focusing specifically on Python developers who want to:
+در این دوره تصادف ، ما به طور خاص روی توسعه دهندگان پایتون که می خواهند:
 
-- Understand the technical architecture of MCP
-- Build custom MCP servers using the Python SDK
-- Integrate these servers into Python applications
-- Make informed decisions about when and how to use MCP
+- معماری فنی MCP را درک کنید
+- ایجاد سرورهای MCP سفارشی با استفاده از Python SDK
+- این سرورها را در برنامه های پایتون ادغام کنید
+- در مورد زمان و نحوه استفاده از MCP تصمیمات آگاهانه بگیرید

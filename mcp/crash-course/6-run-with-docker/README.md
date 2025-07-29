@@ -1,62 +1,61 @@
-[نسخهٔ فارسی](README.fa.md)
-# MCP Server with Docker
+# سرور MCP با Docker
 
-This project demonstrates how to run an MCP (Model Control Protocol) server using Docker. The server provides a simple calculator tool that can be accessed by a client.
+این پروژه نحوه اجرای سرور MCP (پروتکل کنترل مدل) را با استفاده از Docker نشان می دهد.سرور یک ابزار ماشین حساب ساده را ارائه می دهد که توسط مشتری قابل دسترسی است.
 
-## Prerequisites
+## پیش نیازها
 
-- Docker installed on your system
-- Git (to clone the repository)
+- Docker نصب شده بر روی سیستم شما
+- git (برای کلون کردن مخزن)
 
-## Project Structure
+## ساختار پروژه
 
-- `server.py`: The MCP server implementation with a simple calculator tool
-- `client.py`: A client that connects to the server and calls the calculator tool
-- `Dockerfile`: Instructions for building the Docker image
-- `requirements.txt`: Python dependencies for the project
+- `server.py`: اجرای سرور MCP با یک ابزار ماشین حساب ساده
+- `client.py`: مشتری که به سرور متصل می شود و ابزار ماشین حساب را فراخوانی می کند
+- `Dockerfile`: دستورالعمل ساخت تصویر Docker
+- `الزامات. txt`: وابستگی های پایتون برای پروژه
 
-## Running with Docker
+## در حال اجرا با docker
 
-### Step 1: Build the Docker image
+### مرحله 1: تصویر Docker را بسازید
 
-```bash
-docker build -t mcp-server .
-```
+`` `bash
+Docker Build -t MCP -Server.
+`` `
 
-### Step 2: Run the Docker container
+### مرحله 2: ظرف Docker را اجرا کنید
 
-```bash
-docker run -p 8050:8050 mcp-server
-```
+`` `bash
+Docker Run -P 8050: 8050 MCP -Server
+`` `
 
-This will start the MCP server inside a Docker container and expose it on port 8050.
+با این کار سرور MCP در داخل یک ظرف Docker شروع می شود و آن را در پورت 8050 قرار می دهد.
 
-## Running the Client
+## اجرای مشتری
 
-Once the server is running, you can run the client in a separate terminal:
+پس از اجرای سرور ، می توانید مشتری را در یک ترمینال جداگانه اجرا کنید:
 
-```bash
+`` `bash
 python client.py
-```
+`` `
 
-The client will connect to the server, list available tools, and call the calculator tool to add 2 and 3.
+مشتری به سرور متصل می شود ، ابزارهای موجود را لیست می کند و برای اضافه کردن 2 و 3 با ابزار ماشین حساب تماس می گیرد.
 
-## Troubleshooting
+## عیب یابی
 
-If you encounter connection issues:
+اگر با مشکلات اتصال روبرو شدید:
 
-1. **Check if the server is running**: Make sure the Docker container is running with `docker ps`.
+1. ** بررسی کنید که آیا سرور در حال اجرا است **: اطمینان حاصل کنید که ظرف Docker با `Docker PS` کار می کند.
 
-2. **Verify port mapping**: Ensure the port is correctly mapped with `docker ps` or by checking the output of the `docker run` command.
+2. ** تأیید نقشه درگاه **: اطمینان حاصل کنید که پورت به درستی با "Docker PS" یا با بررسی خروجی دستور "Docker Run" نقشه برداری شده است.
 
-3. **Check server logs**: View the server logs with `docker logs <container_id>` to see if there are any errors.
+3. ** گزارش های سرور را بررسی کنید **: برای دیدن اینکه آیا خطایی وجود دارد ، سیاهههای مربوط به سرور را با سیاهههای docker <laoneer_id> مشاهده کنید.
 
-4. **Host binding**: The server is configured to bind to `0.0.0.0` instead of `127.0.0.1` to make it accessible from outside the container. If you're still having issues, you might need to check your firewall settings.
+4. ** اتصال میزبان **: سرور پیکربندی شده است تا به جای `127.0.0.1` به` 0.0.0.0` متصل شود تا آن را از خارج از ظرف در دسترس قرار دهد.اگر هنوز مشکلی دارید ، ممکن است نیاز به بررسی تنظیمات فایروال خود داشته باشید.
 
-5. **Network issues**: If you're running Docker on a remote machine, make sure the port is accessible from your client machine.
+5. ** مشکلات شبکه **: اگر شما در حال کار در یک دستگاه از راه دور هستید ، اطمینان حاصل کنید که پورت از دستگاه مشتری خود قابل دسترسی است.
 
-## Notes
+## یادداشت ها
 
-- The server is configured to use SSE (Server-Sent Events) transport and listens on port 8050.
-- The client connects to the server at `http://localhost:8050/sse`.
-- Make sure the server is running before starting the client. 
+- سرور برای استفاده از حمل و نقل SSE (رویدادهای سرور-سرور) پیکربندی شده و در پورت 8050 گوش می دهد.
+- مشتری در `http: // localhost: 8050/SSE` به سرور متصل می شود.
+- اطمینان حاصل کنید که سرور قبل از شروع مشتری در حال اجرا است.

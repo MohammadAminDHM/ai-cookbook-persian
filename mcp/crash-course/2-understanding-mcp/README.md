@@ -1,129 +1,128 @@
-[نسخهٔ فارسی](README.fa.md)
-## Part 2: Understanding MCP at a Technical Level
+## قسمت 2: درک MCP در یک سطح فنی
 
-### MCP Architecture Overview
+نمای کلی معماری ### MCP
 
-The Model Context Protocol follows a client-host-server architecture:
-This separation of concerns allows for modular, composable systems where each server can focus on a specific domain (like file access, web search, or database operations).
+پروتکل زمینه مدل از معماری مشتری-سرور پیروی می کند:
+این جدایی نگرانی ها امکان سیستم های مدولار و سازنده را فراهم می کند که در آن هر سرور می تواند روی یک دامنه خاص (مانند دسترسی به فایل ، جستجوی وب یا عملیات پایگاه داده) تمرکز کند.
 
-- **MCP Hosts**: Programs like Claude Desktop, IDEs, or your python application that want to access data through MCP
-- **MCP Clients**: Protocol clients that maintain 1:1 connections with servers
-- **MCP Servers**: Lightweight programs that each expose specific capabilities through the standardized Model Context Protocol (tools, resources, prompts)
-- **Local Data Sources**: Your computer's files, databases, and services that MCP servers can securely access
-- **Remote Services**: External systems available over the internet (e.g., through APIs) that MCP servers can connect to
+- ** MCP میزبان **: برنامه هایی مانند Claude Desktop ، Ides یا برنامه Python شما که می خواهند از طریق MCP به داده ها دسترسی پیدا کنند
+- ** مشتری MCP **: مشتری های پروتکل که 1: 1 اتصالات را با سرورها حفظ می کنند
+- ** سرورهای MCP **: برنامه های سبک وزن که هر یک از آنها قابلیت های خاص را از طریق پروتکل زمینه استاندارد مدل (ابزارها ، منابع ، اعلان ها) قرار می دهند
+- ** منابع داده محلی **: پرونده ها ، پایگاه داده ها و خدماتی که سرورهای MCP می توانند به طور ایمن به آنها دسترسی پیدا کنند
+- ** خدمات از راه دور **: سیستم های خارجی موجود از طریق اینترنت (به عنوان مثال ، از طریق API) که سرورهای MCP می توانند به آن متصل شوند
 
-This separation of concerns allows for modular, composable systems where each server can focus on a specific domain (like file access, web search, or database operations).
+این جدایی نگرانی ها امکان سیستم های مدولار و سازنده را فراهم می کند که در آن هر سرور می تواند روی یک دامنه خاص (مانند دسترسی به فایل ، جستجوی وب یا عملیات پایگاه داده) تمرکز کند.
 
-```mermaid
+`` `پری دریایی
 ---
-config:
-  theme: neutral
-  look: classic
-  layout: dagre
+پیکربندی:
+موضوع: خنثی
+نگاه: کلاسیک
+چیدمان: داگر
 ---
-flowchart LR
- subgraph Computer["Your Computer"]
-        Client["Host with MCP Client<br>(Claude, IDEs, Tools)"]
-        ServerA["MCP Server A"]
-        ServerB["MCP Server B"]
-        ServerC["MCP Server C"]
-        DataA[("Local<br>Data Source A")]
-        DataB[("Local<br>Data Source B")]
-  end
- subgraph Internet["Internet"]
-        RemoteC[("Remote<br>Service C")]
-  end
-    Client -- MCP Protocol --> ServerA & ServerB & ServerC
-    ServerA <--> DataA
-    ServerB <--> DataB
-    ServerC -- Web APIs --> RemoteC
-```
+FlowChart LR
+رایانه زیرگراف ["رایانه شما"]
+مشتری ["میزبان با مشتری MCP <br> (کلود ، IDES ، ابزارها)"]
+Servera ["MCP Server A"]
+ServerB ["MCP Server B"]
+ServerC ["MCP Server C"]
+dataA [("منبع داده محلی <br>")]
+پایگاه داده [("محلی <br> منبع داده B")]
+پایان
+اینترنت زیرگراف ["اینترنت"]
+Remotec [("سرویس از راه دور <br> C")]
+پایان
+مشتری -پروتکل MCP -> Servera & ServerB & ServerC
+Servera <-> dataA
+ServerB <-> پایگاه داده
+ServerC -API های وب -> Remotec
+`` `
 
-MCP defines three core primitives that servers can implement:
+MCP سه ابتدایی اصلی را تعریف می کند که سرورها می توانند پیاده سازی کنند:
 
-1. [Tools](https://modelcontextprotocol.io/docs/concepts/tools#python): Model-controlled functions that LLMs can invoke (like API calls, computations)
-2. [Resources](https://modelcontextprotocol.io/docs/concepts/resources#python): Application-controlled data that provides context (like file contents, database records)
-3. [Prompts](https://modelcontextprotocol.io/docs/concepts/prompts#python): User-controlled templates for LLM interactions
+1.
+2.
+3.
 
-For Python developers, the most immediately useful primitive is tools, which allow LLMs to perform actions programmatically.
+برای توسعه دهندگان پایتون ، بلافاصله مفیدترین ابزارهایی است که به LLM ها اجازه می دهد تا اقدامات را به صورت برنامه ای انجام دهند.
 
-### Transport Mechanisms Deep Dive
+### مکانیسم های حمل و نقل شیرجه عمیق
 
-MCP supports three main transport mechanisms:
+MCP از سه مکانیسم اصلی حمل و نقل پشتیبانی می کند:
 
-1. **Stdio (Standard IO)**: 
-   - Communication occurs over standard input/output streams
-   - Best for local integrations when the server and client are on the same machine
-   - Simple setup with no network configuration required
+1. ** stdio (استاندارد IO) **:
+- ارتباطات بر روی جریان های ورودی/خروجی استاندارد رخ می دهد
+- وقتی سرور و مشتری در همان دستگاه هستند ، برای ادغام های محلی بهترین است
+- تنظیم ساده و بدون پیکربندی شبکه لازم نیست
 
-2. **SSE (Server-Sent Events)**:
-   - Uses HTTP for client-to-server communication and SSE for server-to-client
-   - Suitable for remote connections across networks
-   - Allows for distributed architectures
+2. ** SSE (رویدادهای سرور-سرور) **:
+-از HTTP برای ارتباطات مشتری به سرور و SSE برای سرور به مشتری استفاده می کند
+- مناسب برای اتصالات از راه دور در شبکه ها
+- اجازه می دهد تا معماری های توزیع شده
 
-3. **Streamable HTTP** *(Introduced March 24, 2025)*:
-   - Modern HTTP-based streaming transport that supersedes SSE
-   - Uses a unified endpoint for bidirectional communication
-   - **Recommended for production deployments** due to better performance and scalability
-   - Supports both stateful and stateless operation modes
+3. ** قابل پخش HTTP ***(معرفی شده در 24 مارس 2025)*:
+- حمل و نقل مدرن مبتنی بر HTTP که بر SSE برتری دارد
+- از یک نقطه پایانی متحد برای ارتباط دو طرفه استفاده می کند
+- ** برای استقرار تولید ** به دلیل عملکرد بهتر و مقیاس پذیری توصیه می شود
+- از هر دو حالت عملکردی و بدون تابعیت پشتیبانی می کند
 
-Understanding when to use each transport is crucial for building effective MCP implementations:
+درک اینکه چه زمانی از هر حمل و نقل استفاده کنید برای اجرای موثر MCP بسیار مهم است:
 
-- Use **Stdio** when building single-application integrations or during development
-- Use **SSE** for development or when working with older MCP implementations
-- Use **Streamable HTTP** for production deployments where you need the best performance and scalability
+- از ** stdio ** هنگام ساختن ادغام های تک برنامه یا در حین توسعه استفاده کنید
+- از ** SSE ** برای توسعه یا هنگام کار با پیاده سازی های قدیمی MCP استفاده کنید
+- از ** streamable http ** برای استقرار تولید در جایی که به بهترین عملکرد و مقیاس پذیری نیاز دارید استفاده کنید
 
-#### Transport Mechanism Comparison
+#### مقایسه مکانیسم حمل و نقل
 
-```mermaid
+`` `پری دریایی
 ---
-config:
-  theme: neutral
-  look: classic
-  layout: dagre
+پیکربندی:
+موضوع: خنثی
+نگاه: کلاسیک
+چیدمان: داگر
 ---
-flowchart LR
- subgraph Stdio["Stdio Transport"]
-        Client1["MCP Client"]
-        Server1["MCP Server"]
-  end
- subgraph SSE["SSE Transport"]
-        Client2["MCP Client"]
-        Server2["MCP Server"]
-  end
- subgraph StreamableHTTP["Streamable HTTP Transport"]
-        Client3["MCP Client"]
-        Server3["MCP Server"]
-  end
- subgraph Local["Local Deployment"]
-        Stdio
-  end
- subgraph Remote["Remote Deployment"]
-        SSE
-        StreamableHTTP
-  end
-    Client1 -- stdin/stdout<br>(bidirectional) --> Server1
-    Client2 -- HTTP POST<br>(client to server) --> Server2
-    Server2 -- SSE<br>(server to client) --> Client2
-    Client3 -- Unified HTTP<br>(bidirectional streaming) --> Server3
-    style Client1 fill:#BBDEFB
-    style Server1 fill:#BBDEFB
-    style Client2 fill:#BBDEFB
-    style Server2 fill:#E1BEE7
-    style Client3 fill:#C8E6C9
-    style Server3 fill:#C8E6C9
-```
+FlowChart LR
+Subgraph Stdio ["حمل و نقل stdio"]
+Client1 ["مشتری MCP"]
+سرور 1 ["سرور MCP"]
+پایان
+زیرگراف SSE ["حمل و نقل SSE"]
+Client2 ["مشتری MCP"]
+Server2 ["سرور MCP"]
+پایان
+subgraph streamablehttp ["حمل و نقل قابل پخش HTTP"]
+Client3 ["مشتری MCP"]
+Server3 ["سرور MCP"]
+پایان
+Subgraph Local ["استقرار محلیمربی "]
+استردو
+پایان
+از راه دور زیرگراف ["استقرار از راه دور"]
+سس
+streamablehttp
+پایان
+client1 -stdin/stdout <br> (دو طرفه) -> سرور 1
+client2 -http post <br> (مشتری به سرور) -> سرور 2
+Server2 -SSE <br> (سرور به مشتری) -> Client2
+Client3 -یکپارچه HTTP <br> (جریان دو طرفه) -> سرور 3
+style client1 پر کردن: #bbdefb
+Style Server1 Fill: #BBDEFB
+style client2 fill: #bbdefb
+Style Server2 Fill:#E1Bee7
+style client3 fill:#c8e6c9
+Style Server3 Fill:#C8E6C9
+`` `
 
-If you're familiar with FastAPI, you'll find that implementing an MCP server with HTTP transports (both SSE and Streamable HTTP) feels very similar. Both frameworks use HTTP endpoints for receiving requests and support streaming responses. They both allow you to define handlers for specific routes/endpoints and provide async/await patterns for handling requests and generating responses. This similarity makes it easy for FastAPI developers to transition to building MCP servers, as they can leverage their existing knowledge of HTTP, async programming, and streaming responses.
+اگر با FastAPI آشنا هستید ، متوجه خواهید شد که اجرای یک سرور MCP با HTTP Transports (SSE و HTTP قابل پخش) بسیار مشابه است.هر دو چارچوب از نقاط پایانی HTTP برای دریافت درخواست و پشتیبانی از پاسخ های جریان استفاده می کنند.هر دوی آنها به شما امکان می دهند تا برای مسیرها/نقاط پایانی خاص ، دستگیرندگان را تعریف کرده و الگوهای Async/Await را برای رسیدگی به درخواست ها و ایجاد پاسخ ارائه دهید.این شباهت باعث می شود تا توسعه دهندگان FastAPI بتوانند به ایجاد سرورهای MCP تبدیل شوند ، زیرا می توانند دانش موجود خود را در مورد HTTP ، برنامه نویسی ASYNC و پاسخ های جریان به کار گیرند.
 
-### A New Standard
+### یک استاندارد جدید
 
-The true power of MCP isn't in introducing new capabilities, but in standardizing how these capabilities are exposed and consumed. This provides several key advantages:
+قدرت واقعی MCP در معرفی قابلیت های جدید نیست ، بلکه در استاندارد سازی نحوه قرار گرفتن و مصرف این قابلیت ها است.این چندین مزیت کلیدی را ارائه می دهد:
 
-- **Reusability**: Build a server once, use it with any MCP-compatible client
-- **Composability**: Combine multiple servers to create complex capabilities
-- **Ecosystem growth**: Benefit from servers created by others
+- ** قابلیت استفاده مجدد **: یک بار سرور بسازید ، از آن با هر مشتری سازگار با MCP استفاده کنید
+- ** ترکیب **: برای ایجاد قابلیت های پیچیده چندین سرور را ترکیب کنید
+- ** رشد اکوسیستم **: از سرورهای ایجاد شده توسط دیگران بهره مند شوید
 
-The MCP ecosystem is already growing rapidly, with servers available many tools. You can find an overview here: [Officially supported servers](https://github.com/modelcontextprotocol/servers)
+اکوسیستم MCP در حال حاضر به سرعت در حال رشد است و سرورهای بسیاری از ابزارها در دسترس هستند.شما می توانید یک مرور کلی در اینجا پیدا کنید: [سرورهای رسمی پشتیبانی شده] (https://github.com/modelContextProtocol/servers)
 
-This means you can leverage existing servers rather than reinventing the wheel, and contribute your own servers to benefit the community.
+این بدان معنی است که شما می توانید به جای اختراع چرخ ، سرورهای موجود را اهرم کنید و سرورهای خود را برای بهره مندی از جامعه کمک کنید.

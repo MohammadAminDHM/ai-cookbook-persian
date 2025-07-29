@@ -1,127 +1,126 @@
-[نسخهٔ فارسی](README.fa.md)
-# Lifecycle Management in MCP
+# مدیریت چرخه حیات در MCP
 
-Lifecycle management is a crucial aspect of the Model Context Protocol (MCP) that helps you control the initialization, operation, and termination of MCP servers and clients. Understanding lifecycle management is essential for building robust MCP applications.
+مدیریت چرخه عمر یک جنبه مهم از پروتکل زمینه مدل (MCP) است که به شما کمک می کند تا اولیه ، عملکرد و خاتمه سرورها و مشتری های MCP را کنترل کنید.درک مدیریت چرخه عمر برای ساخت برنامه های قوی MCP ضروری است.
 
-## What is Lifecycle Management?
+## مدیریت چرخه عمر چیست؟
 
-Lifecycle management in MCP refers to the process of properly initializing, maintaining, and terminating connections between MCP clients and servers. It ensures that resources are properly allocated and released, and that communication channels are established and closed correctly.
+مدیریت چرخه عمر در MCP به فرایند شروع صحیح ، حفظ و خاتمه ارتباطات بین مشتری و سرورهای MCP اشاره دارد.این تضمین می کند که منابع به درستی اختصاص داده شده و آزاد شده اند و کانال های ارتباطی به درستی ایجاد و بسته می شوند.
 
-## Key Components of Lifecycle Management
+## مؤلفه های اصلی مدیریت چرخه عمر
 
-### 1. Initialization
+### 1. اولیه سازی
 
-Initialization is the first step in the MCP lifecycle:
+اولیه سازی اولین قدم در چرخه عمر MCP است:
 
-- **Client Initialization**: The client establishes a connection to the server and negotiates protocol versions
-- **Server Initialization**: The server validates the client's request and prepares to handle tool calls
-- **Version Negotiation**: Both parties agree on a compatible protocol version to use for the session
+- ** اولیه سازی مشتری **: مشتری ارتباطی به سرور برقرار می کند و نسخه های پروتکل را مذاکره می کند
+- ** اولیه سازی سرور **: سرور درخواست مشتری را تأیید می کند و برای رسیدگی به تماس های ابزار آماده می شود
+- ** مذاکره نسخه **: هر دو طرف در مورد نسخه پروتکل سازگار برای استفاده برای جلسه موافق هستند
 
-```python
-# Client initialization example
-async with stdio_client(server_params) as (read, write):
-    async with ClientSession(read, write) as session:
-        # Initialize the connection
-        await session.initialize()
-```
+`` `پایتون
+# مثال اولیه سازی مشتری
+async با stdio_client (server_params) به عنوان (بخوانید ، بنویسید):
+async با مشتری (بخوانید ، بنویسید) به عنوان جلسه:
+# اتصال را آغاز کنید
+Await Session.Initialize ()
+`` `
 
-### 2. Operation
+### 2. عملیات
 
-During the operation phase:
+در مرحله کار:
 
-- **Tool Registration**: The server exposes its tools to the client
-- **Tool Discovery**: The client discovers available tools from the server
-- **Tool Execution**: The client calls tools and the server executes them
-- **Resource Management**: The server manages resources needed for tool execution
+- ** ثبت نام ابزار **: سرور ابزارهای خود را در معرض مشتری قرار می دهد
+- ** کشف ابزار **: مشتری ابزارهای موجود را از سرور کشف می کند
+- ** اجرای ابزار **: مشتری با ابزار تماس می گیرد و سرور آنها را اجرا می کند
+- ** مدیریت منابع **: سرور منابع مورد نیاز برای اجرای ابزار را مدیریت می کند
 
-```python
-# Tool discovery example
-tools_result = await session.list_tools()
-print("Available tools:")
-for tool in tools_result.tools:
-    print(f"  - {tool.name}: {tool.description}")
+`` `پایتون
+# مثال کشف ابزار
+tools_result = منتظر جلسه. list_tools ()
+چاپ ("ابزارهای موجود:")
+برای ابزار در Tools_result.tools:
+چاپ (f " - {tool.name}: {tool.description}")
 
-# Tool execution example
-result = await session.call_tool(
-    tool_call.function.name,
-    arguments=json.loads(tool_call.function.arguments),
+# مثال اجرای ابزار
+نتیجه = منتظر جلسه. call_tool (
+tool_call.function.name ،
+آرگومان = json.loads (tool_call.function.argument) ،
 )
-```
+`` `
 
-### 3. Termination
+### 3. خاتمه
 
-Termination ensures proper cleanup:
+خاتمه پاکسازی مناسب را تضمین می کند:
 
-- **Resource Cleanup**: All resources allocated during the session are released
-- **Connection Closure**: Communication channels are properly closed
-- **State Reset**: Server state is reset for the next session
+- ** پاکسازی منابع **: کلیه منابع اختصاص یافته در طول جلسه منتشر می شوند
+- ** بسته شدن اتصال **: کانال های ارتباطی به درستی بسته شده اند
+- ** تنظیم مجدد حالت **: حالت سرور برای جلسه بعدی تنظیم مجدد است
 
-```python
-# Termination happens automatically when exiting the context manager
-async with ClientSession(read, write) as session:
-    # Session operations
-    # ...
-# Session is automatically terminated here
-```
+`` `پایتون
+# خاتمه هنگام خروج از مدیر زمینه به طور خودکار اتفاق می افتد
+async با مشتری (بخوانید ، بنویسید) به عنوان جلسه:
+# عملیات جلسه
+# ...
+# جلسه به طور خودکار در اینجا خاتمه می یابد
+`` `
 
-## Advanced Lifecycle Management with the Lifespan Object
+## مدیریت چرخه عمر پیشرفته با شیء طول عمر
 
-For more complex applications, MCP provides a feature called the **lifespan object** that helps manage application-level resources throughout the entire lifecycle of an MCP server.
+برای برنامه های پیچیده تر ، MCP ویژگی ای به نام ** Lifespan Object ** را ارائه می دهد که به مدیریت منابع سطح برنامه در کل چرخه عمر یک سرور MCP کمک می کند.
 
-### What is the Lifespan Object?
+### شیء طول عمر چیست؟
 
-The lifespan object is an asynchronous context manager that:
+شیء طول عمر یک مدیر زمینه ناهمزمان است که:
 
-1. Initializes resources when the server starts
-2. Makes those resources available to all tools during the server's operation
-3. Properly cleans up resources when the server shuts down
+1. با شروع سرور منابع را آغاز می کند
+2. این منابع را در طول عملکرد سرور در دسترس همه ابزارها قرار می دهد
+3. هنگام خاموش شدن سرور ، منابع را به درستی تمیز می کند
 
-### How to Use the Lifespan Object
+### نحوه استفاده از شیء طول عمر
 
-```python
-from contextlib import asynccontextmanager
-from collections.abc import AsyncIterator
-from dataclasses import dataclass
+`` `پایتون
+از ContextLib واردات asynccontextmanager
+از Collections.Abc واردات asyncitor
+از داده های دیتاكاكه دیتاكلاس وارد می كنند
 
-from mcp.server.fastmcp import Context, FastMCP
+از زمینه واردات MCP.Server.FastMcp ، FastMCP
 
-# Define a type-safe context class
-@dataclass
-class AppContext:
-    db: Database  # Replace with your actual resource type
+# کلاس متن ایمن را تعریف کنید
+dataclass
+کلاس AppContext:
+DB: پایگاه داده # با نوع منبع واقعی خود جایگزین کنید
 
-# Create the lifespan context manager
-@asynccontextmanager
-async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
-    # Initialize resources on startup
-    db = await Database.connect()
-    try:
-        # Make resources available during operation
-        yield AppContext(db=db)
-    finally:
-        # Clean up resources on shutdown
-        await db.disconnect()
+# مدیر زمینه طول عمر را ایجاد کنید
+AsynccontextManager
+Async def app_lifespan (سرور: FastMCP) -> asynciterator [appContext]:
+# منابع را در راه اندازی اولیه کنید
+DB = Await Database.Connect ()
+سعی کنید:
+# منابع را در طول کار در دسترس قرار دهید
+عملکرد AppContext (db = db)
+سرانجام:
+# منابع را در خاموش کردن پاک کنید
+منتظر db.disconnect ()
 
-# Create the MCP server with the lifespan
-mcp = FastMCP("My App", lifespan=app_lifespan)
+# سرور MCP را با طول عمر ایجاد کنید
+MCP = FastMCP ("برنامه من" ، طول عمر = APP_LIFESPAN)
 
-# Use the lifespan context in tools
-@mcp.tool()
-def query_db(ctx: Context) -> str:
-    """Tool that uses initialized resources"""
-    db = ctx.request_context.lifespan_context.db
-    return db.query()
-```
+# از زمینه طول عمر در ابزارها استفاده کنید
+@mcp.tool ()
+def query_db (ctx: متن) -> str:
+"" "ابزاری که از منابع اولیه استفاده می کند" "
+db = ctx.request_context.lifespan_context.db
+بازگشت db.query ()
+`` `
 
-### Benefits of Using the Lifespan Object
+### مزایای استفاده از شیء طول عمر
 
-1. **Type Safety**: The lifespan context is strongly typed, providing better IDE support and error checking
-2. **Resource Management**: Ensures resources are properly initialized and cleaned up
-3. **Dependency Injection**: Provides a clean way to inject dependencies into tools
-4. **Separation of Concerns**: Separates resource management from tool implementation
+1. ** نوع ایمنی نوع **: زمینه طول عمر به شدت تایپ شده است ، و پشتیبانی بهتر از IDE و بررسی خطا را ارائه می دهد
+2. ** مدیریت منابع **: تضمین می کند که منابع به درستی اولیه و تمیز می شوند
+3. ** تزریق وابستگی **: یک روش تمیز برای تزریق وابستگی ها به ابزارها فراهم می کند
+4. ** جدایی نگرانی ها **: مدیریت منابع را از اجرای ابزار جدا می کند
 
-## Conclusion
+## نتیجه گیری
 
-By understanding and implementing the initialization, operation, and termination phases correctly, and leveraging the lifespan object for application-level resources, you can create more reliable, efficient, and secure MCP integrations.
+با درک و اجرای فازهای اولیه ، بهره برداری و خاتمه به درستی و استفاده از شیء طول عمر برای منابع سطح برنامه ، می توانید ادغام های MCP قابل اعتماد ، کارآمدتر و ایمن تر ایجاد کنید.
 
-For more detailed information on lifecycle management, refer to the [MCP Lifecycle](https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle#lifecycle).
+برای کسب اطلاعات بیشتر در مورد مدیریت چرخه عمر ، به [MCP Lifecycle] مراجعه کنید (https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle#lifecycle).
