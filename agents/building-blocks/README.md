@@ -1,117 +1,117 @@
-# The 7 Foundational Building Blocks of AI Agents
+# 7 بلوک ساختاری بنیادی عوامل AI
 
-## What I Learned Building Real AI Applications
+## آنچه من ساخت برنامه های واقعی AI را یاد گرفتم
 
-Here's what I've observed after trying countless agent frameworks and talking to developers building real AI products: **the frameworks aren't being used in production**.
+این چیزی است که من بعد از امتحان کردن چارچوب های بی شماری عامل و صحبت با توسعه دهندگان در حال ساخت محصولات واقعی هوش مصنوعی مشاهده کردم: ** این چارچوب ها در تولید استفاده نمی شوند **.
 
-Most successful AI applications I've seen are built with custom building blocks, not frameworks. This is because most effective "AI agents" aren't actually that agentic at all. They're mostly deterministic software with strategic LLM calls placed exactly where they add value.
+بیشتر برنامه های موفقیت آمیز هوش مصنوعی که من دیده ام با بلوک های ساختمانی سفارشی ساخته شده اند ، نه چارچوب.این امر به این دلیل است که مؤثرترین "عوامل هوش مصنوعی" در واقع به هیچ وجه عامل نیست.آنها بیشتر نرم افزارهای تعیین کننده با تماس های استراتژیک LLM هستند که دقیقاً در جایی که ارزش آن را اضافه می کنند ، قرار می گیرند.
 
-The problem is that most frameworks push the "give an LLM some tools and let it figure everything out" approach. But in reality, you don't want your LLM making every decision. You want it handling the one thing it's good at - reasoning with context - while your code handles everything else.
+مشکل این است که بیشتر چارچوب ها "به LLM برخی از ابزارها را می دهید و به آن اجازه می دهد همه چیز را بفهمد".اما در واقعیت ، شما نمی خواهید LLM شما تصمیم بگیرد.شما می خواهید که یک چیز را که در آن خوب است - استدلال با زمینه - در حالی که کد شما همه چیز را اداره می کند.
 
-**The solution is simpler than most frameworks make it seem.** Here's the approach that actually works:
+** راه حل ساده تر از اکثر چارچوب ها به نظر می رسد. ** در اینجا رویکردی است که در واقع کار می کند:
 
-- Break down what you're actually building into fundamental components
-- Solve each problem with proper software engineering best practices  
-- **ONLY INCLUDE AN LLM STEP** when it's impossible to solve with deterministic code
+- آنچه را که در واقع در مؤلفه های اساسی ایجاد می کنید ، تجزیه کنید
+- با بهترین روشهای مهندسی نرم افزار ، هر مشکل را حل کنید
+- ** فقط یک مرحله LLM را شامل می شود ** وقتی که با کد تعیین کننده غیرممکن است
 
-Making an LLM API call is the most expensive and most dangerous operation in modern software development. While incredibly powerful, you want to avoid it at all costs and only use it when absolutely necessary. 
+برقراری تماس API LLM گرانترین و خطرناک ترین عملیات در توسعه نرم افزار مدرن است.در حالی که فوق العاده قدرتمند است ، می خواهید به هر قیمتی از آن جلوگیری کنید و فقط در صورت لزوم از آن استفاده کنید.
 
-This is especially true for background automation systems. There's a huge difference between building personal assistants (like ChatGPT, Cursor) where users are in the loop, versus building fully automated systems that process information or handle workflows without human intervention. Most of you aren't building the next ChatGPT - you're building background automations to make your work or company more efficient.
+این امر به ویژه در مورد سیستم های اتوماسیون پس زمینه صادق است.تفاوت زیادی بین ساخت دستیاران شخصی (مانند Chatgpt ، مکان نما) وجود دارد که کاربران در آن حلقه هستند ، در مقابل ایجاد سیستم های کاملاً خودکار که اطلاعات را پردازش می کنند یا بدون مداخله انسانی ، گردش کار را کنترل می کنند.بیشتر شما در حال ساخت چت های بعدی نیستید - شما در حال ساخت اتوماسیون پس زمینه هستید تا کار یا شرکت خود کارآمدتر شود.
 
-**But when you do make that LLM call, it's all about context engineering.** To get a good answer back, you need the right context at the right time sent to the right model. You need to pre-process all available information, prompts, and user input so the LLM can easily and reliably solve the problem. This is the most fundamental skill in working with LLMs.
+** اما وقتی این تماس LLM را برقرار می کنید ، همه چیز در مورد مهندسی زمینه است. ** برای دریافت یک پاسخ خوب ، شما به متن مناسب در زمان مناسب ارسال شده به مدل مناسب نیاز دارید.شما باید تمام اطلاعات ، ارسال ها و ورودی کاربر را از قبل پردازش کنید تا LLM بتواند به راحتی و با اطمینان مشکل را حل کند.این اساسی ترین مهارت در کار با LLMS است.
 
-AI agents are simply workflows - directed acyclic graphs (DAGs) if you're being precise, or just graphs if you include loops. Most steps in these workflows should be regular code - not LLM calls.
+نمایندگان AI به سادگی گردش کار هستند - اگر دقیق هستید ، نمودارهای حرکتی (DAG) را هدایت می کنند ، یا اگر حلقه ها را شامل می شوید ، فقط نمودارهایی را انجام می دهید.بیشتر مراحل در این گردش کار باید کد منظم باشد - نه تماس های LLM.
 
-## The 7 Building Blocks
+## 7 بلوک ساختمان
 
-Given all of this, you only need these seven core building blocks to solve almost any business problem. Take your big problem, break it down into smaller problems, then solve each one using these building blocks chained together - that's how you build effective AI agents.
+با توجه به همه اینها ، شما فقط به این هفت بلوک اصلی ساختمان نیاز دارید تا تقریباً هر مشکل تجاری را حل کنید.مشکل بزرگ خود را برطرف کنید ، آن را به مشکلات کوچکتر برسانید ، سپس با استفاده از این بلوک های ساختمانی که به هم زنجیر شده اند ، هرکدام را حل کنید - اینگونه است که شما عوامل AI مؤثر را می سازید.
 
-These are the fundamental primitives. But how do you actually combine them? That's where [workflow orchestration](https://github.com/daveebbelaar/ai-cookbook/tree/main/patterns/workflows) comes in - prompt chaining, routing, reflection, and other agentic patterns that emerge when you combine these building blocks strategically.
+اینها ابتدایی اساسی هستند.اما چگونه واقعاً آنها را ترکیب می کنید؟این جایی است که [Orchestration گردش کار] (https://github.com/daveebbelaar/ai -cookbook/tree/main/patterns/workflows) وارد می شود - زنجیرهای سریع ، مسیریابی ، تأمل و سایر الگوهای عامل که وقتی این بلوک های ساختمانی را با هم ترکیب می کنید ، ظاهر می شوند.
 
-### 1. Intelligence
-**The only truly "AI" component**
+### 1. هوش
+** تنها مؤلفه واقعاً "ai" **
 
-This is where the magic happens - and it's surprisingly simple. You send text to an LLM, it thinks about it, and sends text back. That's it. **Without this, you just have regular software.** The tricky part isn't the LLM call itself - it's everything else you need to build around it.
+اینجاست که جادو اتفاق می افتد - و به طرز شگفت آور ساده است.شما متن را به LLM ارسال می کنید ، در مورد آن فکر می کند و متن را به عقب می فرستد.این است** بدون این ، شما فقط نرم افزاری معمولی دارید. ** قسمت پیچیده خود LLM نیست - این همه چیز دیگری است که برای ساختن آن نیاز دارید.
 
-```mermaid
-graph LR
-    A[User Input] --> B[LLM Processing] --> C[Generated Response]
-```
+`` `پری دریایی
+نمودار LR
+A [ورودی کاربر] -> B [پردازش LLM] -> C [پاسخ تولید شده]
+`` `
 
-### 2. Memory
-**Context persistence across interactions**
+### 2. حافظه
+** تداوم متن در تعامل **
 
-LLMs don't remember anything from previous messages. **Without memory, each interaction starts from scratch** because LLMs are stateless. So you need to manually pass in the conversation history each time. This is just *storing and passing conversation state* - something we've been doing in web apps forever.
+LLMS چیزی از پیام های قبلی را به خاطر نمی آورد.** بدون حافظه ، هر تعامل از ابتدا شروع می شود ** زیرا LLM ها بدون تابعیت هستند.بنابراین شما باید هر بار به صورت دستی در تاریخ مکالمه عبور کنید.این فقط * ذخیره و عبور از حالت مکالمه * است - کاری که ما برای همیشه در برنامه های وب انجام داده ایم.
 
-```mermaid
-graph LR
-    A[Previous Context] --> C[LLM Processing]
-    B[New Input] --> C
-    C --> D[Response]
-    C --> E[Updated Context] --> F[Context Storage]
-```
+`` `پری دریایی
+نمودار LR
+A [زمینه قبلی] -> C [پردازش LLM]
+B [ورودی جدید] -> C
+ج -> D [پاسخ]
+C -> E [متن به روز شده] -> F [ذخیره سازی زمینه]
+`` `
 
-### 3. Tools
-**External system integration capabilities**
+### 3. ابزارها
+** inte سیستم خارجیقابلیت های gration **
 
-Most of the time you need your LLM to actually do stuff, not just chat. **Pure text generation is limited** - you want to call APIs, update databases, or read files. Tools let the LLM say "I need to call this function with these parameters" and your code handles the actual execution. This is just *normal API integration* where the LLM picks what to call and provides JSON input for the arguments.
+بیشتر اوقات شما برای انجام کارها به LLM خود نیاز دارید ، نه فقط گپ.** تولید متن خالص محدود است ** - شما می خواهید با API ها تماس بگیرید ، پایگاه داده ها را به روز کنید یا پرونده ها را بخوانید.ابزارها به LLM اجازه می دهند "من باید این عملکرد را با این پارامترها بنامم" و کد شما اجرای واقعی را انجام می دهد.این فقط * ادغام API عادی * است که LLM چه چیزی را برای تماس با آن انتخاب می کند و ورودی JSON را برای آرگومان ها فراهم می کند.
 
-```mermaid
-graph LR
-    A[User Input] --> B[LLM Analyzes Request] --> C{Tool Needed?}
-    C -->|Yes| D[Select Tool] --> F[Execute Tool] --> G[Tool Result] --> H[LLM Formats Response]
-    C -->|No| E[Direct Response]
-    H --> I[Final Response]
-    E --> I
-```
+`` `پری دریایی
+نمودار LR
+A [ورودی کاربر] -> B [درخواست تجزیه و تحلیل LLM] -> C {ابزار مورد نیاز؟
+ج -> | بله |D [SELECT TOOL] -> F [EXECUTE TOOL] -> G [نتیجه ابزار] -> H [پاسخ فرمت های LLM]
+ج -> | نه |E [پاسخ مستقیم]
+ح -> من [پاسخ نهایی]
+E -> من
+`` `
 
-### 4. Validation
-**Quality assurance and structured data enforcement**
+### 4. اعتبار سنجی
+** تضمین کیفیت و اجرای داده های ساختاری **
 
-You need to make sure the LLM returns JSON that matches your expected schema. **LLMs are probabilistic and can produce inconsistent outputs**, so you validate the JSON output against a predefined structure. If validation fails, you can send it back to the LLM to fix it. This ensures downstream code can reliably work with the data. This is just *normal schema validation* with retry logic using tools like Pydantic, Zod, or data classes.
+شما باید مطمئن شوید که LLM JSON را که مطابق با طرح مورد انتظار شما است ، باز می گرداند.** LLM ها احتمالی هستند و می توانند خروجی های متناقض را تولید کنند ** ، بنابراین شما خروجی JSON را در برابر یک ساختار از پیش تعریف شده تأیید می کنید.در صورت عدم موفقیت ، می توانید آن را به LLM ارسال کنید تا آن را برطرف کنید.این تضمین می کند که کد پایین دست می تواند با اطمینان با داده ها کار کند.این فقط * اعتبار سنجی طرحواره ای طبیعی * با منطق آزمایش مجدد با استفاده از ابزارهایی مانند کلاسهای Pydantic ، Zod یا Data است.
 
-```mermaid
-graph LR
-    A[LLM JSON Output] --> B[Validate Schema] --> C{Valid?}
-    C -->|Yes| D[Structured Data]
-    C -->|No| E[Send Back to LLM] --> A
-```
+`` `پری دریایی
+نمودار LR
+A [LLM JSON OUTPUT] -> B [اعتبارسنجی طرحواره] -> C {معتبر؟
+ج -> | بله |D [داده های ساختاری]
+ج -> | نه |E [ارسال به LLM] -> a
+`` `
 
-### 5. Control
-**Deterministic decision-making and process flow**
+### 5. کنترل
+** تصمیم گیری قطعی و جریان فرآیند **
 
-You don't want your LLM making every decision - some things should be handled by regular code. Use if/else statements, switch cases, and routing logic to direct flow based on conditions. This is just *normal business logic and routing* that you'd write in any application.
+شما نمی خواهید LLM شما تصمیم بگیرد - برخی از موارد باید با کد منظم انجام شود.در صورت/موارد دیگر ، موارد سوئیچ و منطق مسیریابی را برای جریان مستقیم بر اساس شرایط استفاده کنید.این فقط * منطق تجاری و مسیریابی طبیعی است که می خواهید در هر برنامه بنویسید.
 
-```mermaid
-graph LR
-    A[Input] --> B[Classify Intent] --> C{Intent Type}
-    C -->|Question| D[Answer Handler] --> G[Response]
-    C -->|Request| E[Request Handler] --> G
-    C -->|Complaint| F[Complaint Handler] --> G
-```
+`` `پری دریایی
+نمودار LR
+A [input] -> b [طبقه بندی هدف] -> C {نوع هدف}
+ج -> | سوال |D [پاسخ کنترل] -> G [پاسخ]
+ج -> | درخواست |E [درخواست کننده درخواست] -> g
+ج -> | شکایت |f [کنترل کننده شکایت] -> g
+`` `
 
-### 6. Recovery
-**Graceful failure management**
+### 6. بازیابی
+** مدیریت شکست لطف **
 
-**Things will go wrong** - APIs will be down, LLMs will return nonsense, rate limits will hit you. You need try/catch blocks, retry logic with backoff, and fallback responses when stuff breaks. This is just *standard error handling* that you'd implement in any production system.
+** همه چیز اشتباه خواهد شد ** - API ها پایین خواهند آمد ، LLMS مزخرف باز می گردد ، محدودیت نرخ به شما ضربه می زند.هنگام شکستن چیزها ، نیاز به بلوک های امتحان/گرفتن ، منطق را دوباره امتحان کنید و پاسخ های برگشتی را انجام دهید.این فقط * رسیدگی به خطای استاندارد * است که شما در هر سیستم تولیدی پیاده سازی می کنید.
 
-```mermaid
-graph LR
-    A[Process Request] --> B{Success?}
-    B -->|Yes| C[Return Result]
-    B -->|No| D[Error Detected] --> E{Retry Possible?}
-    E -->|Yes| F[Retry with Backoff] --> A
-    E -->|No| G[Execute Fallback] --> H[Fallback Response]
-```
+`` `پری دریایی
+نمودار LR
+A [درخواست فرآیند] -> B {موفقیت؟
+ب -> | بله |ج [نتیجه بازگشت]
+ب -> | نه |D [خطا تشخیص داده شده] -> E {دوباره امتحان کنید؟
+E -> | بله |f [دوباره با Backoff] -> a
+E -> | نه |g [اجرای Fallback] -> H [پاسخ برگشت به عقب]
+`` `
 
-### 7. Feedback
-**Human oversight and approval workflows**
+### 7 بازخورد
+** گردش کار نظارت و تأیید انسان **
 
-Sometimes you need a human to check the LLM's work before it goes live. **Some decisions are too important or complex for full automation** - like sending emails to customers or making purchases. Add approval steps where humans can review and approve/reject before execution. This is just *basic approval workflows* like you'd build for any app.
+بعضی اوقات برای بررسی کار LLM قبل از زنده بودن به یک انسان نیاز دارید.** برخی از تصمیمات برای اتوماسیون کامل بسیار مهم یا پیچیده هستند - مانند ارسال ایمیل به مشتریان یا خرید.مراحل تصویب را اضافه کنید که انسان بتواند قبل از اجرای آن را مرور و تأیید و رد کند.این فقط * گردش کار اولیه تأیید * مانند شما می توانید برای هر برنامه ای بسازید.
 
-```mermaid
-graph LR
-    A[Generate Response] --> B[Human Review] --> C{Approved?}
-    C -->|Yes| D[Execute/Send Response]
-    C -->|No| E[Request Revision] --> F[Revise Response] --> B
-```
+`` `پری دریایی
+نمودار LR
+A [پاسخ تولید] -> B [بررسی انسانی] -> C {تأیید شده؟
+ج -> | بله |D [اجرای/ارسال پاسخ]
+ج -> | نه |E [درخواست تجدید نظر] -> F [پاسخ تجدید نظر] -> b
+`` `

@@ -1,237 +1,237 @@
-## Part 3: Simple Server Setup with Python SDK
+## قسمت 3: تنظیم سرور ساده با Python SDK
 
-### Building Your First MCP Server
+### اولین سرور MCP خود را بسازید
 
-Let's create a simple demo server with a tool:
+بیایید یک سرور نمایشی ساده با یک ابزار ایجاد کنیم:
 
-```python
+`` `پایتون
 # server.py
-from mcp.server.fastmcp import FastMCP
+از mcp.server.fastmcp واردات fastmcp
 
-# Create an MCP server
-mcp = FastMCP("DemoServer")
+# سرور MCP ایجاد کنید
+MCP = FastMCP ("Demoserver")
 
-# Simple tool
-@mcp.tool()
-def say_hello(name: str) -> str:
-    """Say hello to someone
+# ابزار ساده
+@mcp.tool ()
+def say_hello (نام: str) -> str:
+"" "سلام به کسی
 
-    Args:
-        name: The person's name to greet
-    """
-    return f"Hello, {name}! Nice to meet you."
+استدلال ها:
+نام: نام شخص برای سلام
+"" "
+بازگشت f "سلام ، {نام}! خوشحالم که شما را ملاقات کردم."
 
-# Run the server
-if __name__ == "__main__":
-    mcp.run()
-```
+# سرور را اجرا کنید
+اگر __name__ == "__main__":
+mcp.run ()
+`` `
 
-### Running the Server
+### در حال اجرا سرور
 
-There are several ways to run your MCP server:
+روش های مختلفی برای اجرای سرور MCP شما وجود دارد:
 
-#### 1. Development Mode with MCP Inspector
+#### 1. حالت توسعه با بازرس MCP
 
-The easiest way to test your server is using the MCP Inspector:
+ساده ترین راه برای آزمایش سرور شما استفاده از بازرس MCP است:
 
-```bash
-mcp dev server.py
-```
+`` `bash
+MCP Dev Server.py
+`` `
 
-This runs your server locally and connects it to the MCP Inspector, a web-based tool that lets you interact with your server's tools and resources directly. This is great for testing.
+این سرور شما را به صورت محلی اجرا می کند و آن را به بازرس MCP ، ابزاری مبتنی بر وب متصل می کند که به شما امکان می دهد مستقیماً با ابزارها و منابع سرور خود ارتباط برقرار کنید.این برای آزمایش عالی است.
 
-#### 2. Claude Desktop Integration
+#### 2. ادغام دسک تاپ کلود
 
-If you have Claude Desktop installed, you can install your server to use with Claude:
+اگر Claude Desktop را نصب کرده اید ، می توانید سرور خود را برای استفاده با Claude نصب کنید:
 
-```bash
-mcp install server.py
-```
+`` `bash
+MCP Server.py را نصب کنید
+`` `
 
-This will add your server to Claude Desktop's configuration, making it available to Claude.
+با این کار سرور شما به پیکربندی Claude Desktop اضافه می شود و آن را در دسترس Claude قرار می دهد.
 
-#### 3. Direct Execution (only needed or SSE)
+#### 3. اجرای مستقیم (فقط مورد نیاز یا SSE)
 
-You can also run the server directly:
+همچنین می توانید سرور را مستقیماً اجرا کنید:
 
-```bash
-# Method 1: Running as a Python script
-python server.py
+`` `bash
+# روش 1: در حال اجرا به عنوان یک اسکریپت پایتون
+Python Server.py
 
-# Method 2: Using UV (recommended)
+# روش 2: استفاده از UV (توصیه شده)
 uv run server.py
-```
+`` `
 
-### What Happens When You Run an MCP Server?
+### هنگام اجرای سرور MCP چه اتفاقی می افتد؟
 
-When you run an MCP server:
+وقتی سرور MCP را اجرا می کنید:
 
-1. The server initializes with the capabilities you've defined (tools, resources, etc.)
-2. It starts listening for connections on a specific transport
+1. سرور با قابلیت هایی که تعریف کرده اید (ابزار ، منابع و غیره) آغاز می شود
+2. شروع به گوش دادن به اتصالات در یک حمل و نقل خاص می کند
 
-By default, MCP servers don't use a traditional web server port. Instead, they use either:
+به طور پیش فرض ، سرورهای MCP از درگاه سرور وب سنتی استفاده نمی کنند.در عوض ، آنها از آنها استفاده می کنند:
 
-- **stdio transport**: The server communicates through standard input and output (the default for `mcp run` and integration with Claude Desktop)
-- **SSE transport**: For HTTP-based communication (used when explicitly configured)
+- ** Stdio Transport **: سرور از طریق ورودی و خروجی استاندارد ارتباط برقرار می کند (پیش فرض برای "MCP Run" و ادغام با دسک تاپ Claude)
+- ** SSE Transport **: برای ارتباطات مبتنی بر HTTP (هنگام پیکربندی صریح استفاده می شود)
 
-If you want to expose your server over HTTP with a specific port, you need to modify your server to use the SSE transport:
+اگر می خواهید سرور خود را بر روی HTTP با یک درگاه خاص قرار دهید ، برای استفاده از SSE Transport باید سرور خود را اصلاح کنید:
 
-```python
-from mcp.server.fastmcp import FastMCP
+`` `پایتون
+از mcp.server.fastmcp واردات fastmcp
 
-mcp = FastMCP("MyServer", host="127.0.0.1", port=8050)
+MCP = FastMCP ("MyServer" ، HOST = "127.0.0.1" ، پورت = 8050)
 
-# Add your tools and resources here...
+# ابزارها و منابع خود را اینجا اضافه کنید ...
 
-if __name__ == "__main__":
-    # Run with SSE transport on port 8000
-    mcp.run(transport="sse")
-```
+اگر __name__ == "__main__":
+# با SSE Transport در بندر 8000 اجرا کنید
+MCP.Run (Transport = "SSE")
+`` `
 
-Then you can run it with:
+سپس می توانید آن را با:
 
-```bash
-python server.py
-```
+`` `bash
+Python Server.py
+`` `
 
-This will start your server at `http://127.0.0.1:8050`.
+این سرور شما را از طریق http: //127.0.0.1: 8050` شروع می کند.
 
-### Client-Side Implementation (with Standard I/O)
+### اجرای سمت مشتری (با استاندارد I/O)
 
-Now, let's see how to create a client that uses our server:
+حال ، بیایید ببینیم چگونه مشتری ایجاد کنیم که از سرور ما استفاده کند:
 
-```python
-import asyncio
-import nest_asyncio
-from mcp import ClientSession, StdioServerParameters
-from mcp.client.stdio import stdio_client
+`` `پایتون
+واردات asyncio
+وارد کردن Nest_Asyncio
+از مشتری های واردات MCP ، stdioserverparameters
+از mcp.client.stdio واردات stdio_client
 
-async def main():
-    # Define server parameters
-    server_params = StdioServerParameters(
-        command="python",  # The command to run your server
-        args=["server.py"],  # Arguments to the command
-    )
+async def main ():
+# پارامترهای سرور را تعریف کنید
+server_params = stdioserverparameters (
+Command = "Python" ، # دستور اجرای سرور شما
+args = ["server.py"] ، # آرگومان به دستور
+)
 
-    # Connect to the server
-    async with stdio_client(server_params) as (read_stream, write_stream):
-        async with ClientSession(read_stream, write_stream) as session:
-            # Initialize the connection
-            await session.initialize()
+# به سرور وصل شوید
+async با stdio_client (server_params) به عنوان (read_stream ، write_stream):
+async با مشتری (read_stream ، write_stream) به عنوان جلسه:
+# اتصال را آغاز کنید
+Await Session.Initialize ()
 
-            # List available tools
-            tools_result = await session.list_tools()
-            print("Available tools:")
-            for tool in tools_result.tools:
-                print(f"  - {tool.name}: {tool.description}")
+# لیست ابزارهای موجود
+tools_result = منتظر جلسه. list_tools ()
+چاپ ("ابزارهای موجود:")
+برای ابزار در Tools_result.tools:
+چاپ (f " - {tool.name}: {tool.description}")
 
-            # Call our calculator tool
-            result = await session.call_tool("add", arguments={"a": 2, "b": 3})
-            print(f"2 + 3 = {result.content[0].text}")
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
-This client:
-
-1. Creates a connection to our server via stdio
-2. Establishes an MCP session
-3. Lists available tools
-4. Calls the `add` tool with arguments
-
-### Client-Side Implementation (with Server-Sent Events)
-
-Here's how to connect to your server with SSE:
-
-```python
-import asyncio
-import nest_asyncio
-from mcp import ClientSession
-from mcp.client.sse import sse_client
-
-async def main():
-    # Connect to the server using SSE
-    async with sse_client("http://localhost:8050/sse") as (read_stream, write_stream):
-        async with ClientSession(read_stream, write_stream) as session:
-            # Initialize the connection
-            await session.initialize()
-
-            # List available tools
-            tools_result = await session.list_tools()
-            print("Available tools:")
-            for tool in tools_result.tools:
-                print(f"  - {tool.name}: {tool.description}")
-
-            # Call our calculator tool
-            result = await session.call_tool("add", arguments={"a": 2, "b": 3})
-            print(f"2 + 3 = {result.content[0].text}")
+# با ابزار ماشین حساب ما تماس بگیرید
+نتیجه = منتظر جلسه. call_tool ("افزودن" ، آرگومان = {"a": 2 ، "b": 3})
+چاپ (f "2 + 3 = {result.content [0] .text}")
 
 
-if __name__ == "__main__":
-    asyncio.run(main())
-```
+اگر __name__ == "__main__":
+asyncio.run (اصلی ())
+`` `
 
-### Client-Side Implementation (with Streamable HTTP) - **NEW**
+این مشتری:
 
-> **Note**: Streamable HTTP transport was introduced on **March 24, 2025** and is now the **recommended approach for production deployments**, superseding SSE transport. [Learn more in the official documentation](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http).
+1. از طریق stdio به سرور ما ارتباطی ایجاد می کند
+2. یک جلسه MCP ایجاد می کند
+3. لیست ابزارهای موجود
+4. ابزار `افزودن را با استدلال فراخوانی می کند
 
-**Why Streamable HTTP?**
+### اجرای سمت مشتری (با رویدادهای سرور-سن)
 
-Streamable HTTP offers several advantages over SSE:
-- **Better Performance**: 3-5x improvement under high concurrency
-- **Simplified Architecture**: Single endpoint instead of separate HTTP + SSE endpoints
-- **Enhanced Scalability**: Better support for multi-node deployments
-- **Modern Standards**: Built on current HTTP streaming standards
+در اینجا نحوه اتصال به سرور خود با SSE آورده شده است:
 
-**How It Works:**
+`` `پایتون
+واردات asyncio
+وارد کردن Nest_Asyncio
+از MCP واردات مشتری
+از mcp.client.sse واردات sse_client
 
-Streamable HTTP uses a single HTTP endpoint (`/mcp`) that supports both stateful and stateless operation modes. Unlike SSE which requires maintaining separate endpoints, Streamable HTTP provides a unified interface for all MCP communication.
+async def main ():
+# اتصال به tاو سرور با استفاده از SSE
+Async با SSE_CLIENT ("http: // localhost: 8050/sse") به عنوان (read_stream ، write_stream):
+async با مشتری (read_stream ، write_stream) به عنوان جلسه:
+# اتصال را آغاز کنید
+Await Session.Initialize ()
 
-Here's how to connect using the new Streamable HTTP transport:
+# لیست ابزارهای موجود
+tools_result = منتظر جلسه. list_tools ()
+چاپ ("ابزارهای موجود:")
+برای ابزار در Tools_result.tools:
+چاپ (f " - {tool.name}: {tool.description}")
 
-```python
-import asyncio
-import nest_asyncio
-from mcp import ClientSession
-from mcp.client.streamable_http import streamablehttp_client
-
-async def main():
-    # Connect to the server using Streamable HTTP
-    async with streamablehttp_client("http://localhost:8050/mcp") as (read_stream, write_stream, get_session_id):
-        async with ClientSession(read_stream, write_stream) as session:
-            # Initialize the connection
-            await session.initialize()
-
-            # List available tools
-            tools_result = await session.list_tools()
-            print("Available tools:")
-            for tool in tools_result.tools:
-                print(f"  - {tool.name}: {tool.description}")
-
-            # Call our calculator tool
-            result = await session.call_tool("add", arguments={"a": 2, "b": 3})
-            print(f"2 + 3 = {result.content[0].text}")
+# با ابزار ماشین حساب ما تماس بگیرید
+نتیجه = منتظر جلسه. call_tool ("افزودن" ، آرگومان = {"a": 2 ، "b": 3})
+چاپ (f "2 + 3 = {result.content [0] .text}")
 
 
-if __name__ == "__main__":
-    asyncio.run(main())
-```
+اگر __name__ == "__main__":
+asyncio.run (اصلی ())
+`` `
 
-**Key Differences from SSE:**
+### اجرای سمت مشتری (با HTTP قابل پخش) - ** جدید **
 
-| **SSE Transport** | **Streamable HTTP Transport** |
-|-------------------|-------------------------------|
-| `/sse` endpoint | `/mcp` endpoint |
-| Returns 2 values: `(read, write)` | Returns 3 values: `(read, write, get_session_id)` |
-| Separate HTTP + SSE streams | Unified HTTP streaming |
-| Good for development | **Recommended for production** |
+> ** توجه داشته باشید **: حمل و نقل HTTP قابل پخش در ** 24 مارس 2025 ** معرفی شده است و اکنون رویکرد ** توصیه شده برای استقرار تولید ** ، با تعویض حمل و نقل SSE است.[در مستندات رسمی بیشتر بدانید] (https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http).
 
-### Which Approach Should You Choose?
+** چرا http قابل پخش؟ **
 
-- **Use stdio** if your client and server will be running in the same process or if you're starting the server process directly from your client.
-- **Use Streamable HTTP** for production deployments where you need the best performance and scalability.
-- **Use SSE** for development or when working with older MCP implementations that don't yet support Streamable HTTP.
+HTTP قابل پخش چندین مزیت نسبت به SSE ارائه می دهد:
+- ** عملکرد بهتر **: بهبود 3-5x تحت همزمانی بالا
+- ** معماری ساده **: نقطه پایانی به جای نقاط پایانی HTTP + SSE جداگانه
+- ** مقیاس پذیری پیشرفته **: پشتیبانی بهتر برای استقرار چند گره
+- ** استانداردهای مدرن **: بر اساس استانداردهای جریان فعلی HTTP ساخته شده است
 
-For most production backend integrations, the **Streamable HTTP** approach offers the best performance and modern architecture, while stdio might be simpler for development or tightly coupled systems.
+** چگونه کار می کند: **
+
+HTTP قابل پخش از یک نقطه پایانی HTTP (`/MCP`) استفاده می کند که از هر دو حالت عملکرد حالت و بدون تابعیت پشتیبانی می کند.بر خلاف SSE که نیاز به حفظ نقاط پایانی جداگانه دارد ، HTTP قابل پخش یک رابط یکپارچه برای همه ارتباطات MCP فراهم می کند.
+
+در اینجا نحوه اتصال با استفاده از حمل و نقل جدید قابل پخش HTTP آورده شده است:
+
+`` `پایتون
+واردات asyncio
+وارد کردن Nest_Asyncio
+از MCP واردات مشتری
+از mcp.client.streamable_http واردات streamablehttp_client
+
+async def main ():
+# با استفاده از HTTP قابل پخش به سرور وصل شوید
+async با streamablehttp_client ("http: // localhost: 8050/mcp") به عنوان (read_stream ، write_stream ، get_session_id):
+async با مشتری (read_stream ، write_stream) به عنوان جلسه:
+# اتصال را آغاز کنید
+Await Session.Initialize ()
+
+# لیست ابزارهای موجود
+tools_result = منتظر جلسه. list_tools ()
+چاپ ("ابزارهای موجود:")
+برای ابزار در Tools_result.tools:
+چاپ (f " - {tool.name}: {tool.description}")
+
+# با ابزار ماشین حساب ما تماس بگیرید
+نتیجه = منتظر جلسه. call_tool ("افزودن" ، آرگومان = {"a": 2 ، "b": 3})
+چاپ (f "2 + 3 = {result.content [0] .text}")
+
+
+اگر __name__ == "__main__":
+asyncio.run (اصلی ())
+`` `
+
+** تفاوت های کلیدی از SSE: **
+
+|** حمل و نقل SSE ** |** حمل و نقل HTTP قابل پخش ** |
+| --------------------- | --------------------------------- |
+|نقطه پایانی `/Sse` |نقطه پایانی `/MCP` |
+|2 مقدار را برمی گرداند: `(بخوانید ، بنویسید)` |3 مقدار را برمی گرداند: `(بخوانید ، بنویسید ، get_session_id)` |
+|جداگانه HTTP + SSE جریان |جریان HTTP یکپارچه |
+|خوب برای توسعه |** برای تولید توصیه می شود ** |
+
+### کدام رویکرد را باید انتخاب کنید؟
+
+- ** اگر مشتری و سرور شما در همان فرآیند کار می کنند یا اگر فرآیند سرور را مستقیماً از مشتری خود شروع می کنید ، از stdio ** استفاده کنید.
+- ** برای استقرار تولید در جایی که به بهترین عملکرد و مقیاس پذیری نیاز دارید ، از http ** قابل استفاده استفاده کنید.
+- ** از SSE ** برای توسعه یا هنگام کار با پیاده سازی های قدیمی MCP استفاده کنید که هنوز از HTTP قابل پخش پشتیبانی نمی کنند.
+
+برای بیشتر ادغام های تولیدی با حمایت ، رویکرد ** قابل پخش HTTP ** بهترین عملکرد و معماری مدرن را ارائه می دهد ، در حالی که Stdio ممکن است برای توسعه یا سیستم های محکم و محکم ساده تر باشد.

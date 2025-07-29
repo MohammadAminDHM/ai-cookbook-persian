@@ -1,48 +1,48 @@
-# MCP Crash Course for Python Developers
+# دوره تصادف MCP برای توسعه دهندگان پایتون
 
-The Model Context Protocol (MCP) is a powerful framework that enables developers to build AI applications with large language models (LLMs) by providing a standardized way to connect models with external data sources and tools. This crash course will guide you through the fundamentals of MCP, from understanding its core concepts to implementing servers and clients that leverage prompts, resources, and tools.
+پروتکل زمینه Model (MCP) یک چارچوب قدرتمند است که با ارائه یک روش استاندارد برای اتصال مدل ها با منابع و ابزارهای داده خارجی ، توسعه دهندگان را قادر می سازد تا برنامه های AI را با مدل های بزرگ زبان (LLMS) بسازند.این دوره تصادف شما را از طریق اصول MCP ، از درک مفاهیم اصلی آن گرفته تا اجرای سرورها و مشتریانی که از آنها استفاده می کنند ، منابع و ابزارهای خود را راهنمایی می کنند.
 
-## Table of Contents
+## فهرست مطالب
 
-1. [Introduction and Context](./1-introduction-and-context/README.md)
-2. [Understanding MCP](./2-understanding-mcp/README.md)
-3. [Simple Server Setup with Python SDK](./3-simple-server-setup/README.md)
-4. [OpenAI Integration](./4-openai-integration/README.md)
-5. [MCP vs Function Calling](./5-mcp-vs-function-calling/README.md)
-6. [Running with Docker](./6-run-with-docker/README.md)
-7. [Lifecycle Management](./7-lifecycle-management/README.md)
+1.
+2. [درک MCP] (./ 2-درک-mcp/readme.md)
+3. [تنظیم سرور ساده با Python SDK] (.
+4.
+5.
+6. [در حال اجرا با Docker] (./ 6-run-with-docker/readme.md)
+7. [مدیریت چرخه عمر] (.
 
-## Setting Up Your Development Environment
+## تنظیم محیط توسعه خود
 
-Let's start by setting up our environment. The MCP Python SDK provides everything we need to build both servers and clients.
+بیایید با تنظیم محیط خود شروع کنیم.MCP Python SDK هر آنچه را که برای ساختن سرور و مشتری نیاز داریم فراهم می کند.
 
-```bash
-# Using uv (recommended)
-uv pip install -r requirements.txt
+`` `bash
+# با استفاده از UV (توصیه شده)
+UV PIP نصب -r الزامات .txt
 
-# Or using pip
-pip install -r requirements.txt
-```
+# یا استفاده از PIP
+pip install -r نیاز. txt
+`` `
 
-The MCP CLI tools provide helpful utilities for development and testing:
+ابزارهای MCP CLI ابزارهای مفیدی را برای توسعه و آزمایش ارائه می دهند:
 
-```bash
-# Test a server with the MCP Inspector
-mcp dev server.py
+`` `bash
+# سرور را با بازرس MCP تست کنید
+MCP Dev Server.py
 
-# Install a server in Claude Desktop
-mcp install server.py
+# سرور را در دسک تاپ کلود نصب کنید
+MCP Server.py را نصب کنید
 
-# Run a server directly
+# مستقیماً سرور را اجرا کنید
 mcp run server.py
-```
+`` `
 
-## Resources and Next Steps
+## منابع و مراحل بعدی
 
-Key resources for deepening your MCP knowledge:
+منابع اصلی برای تعمیق دانش MCP شما:
 
-- [Model Context Protocol documentation](https://modelcontextprotocol.io)
-- [Model Context Protocol specification](https://spec.modelcontextprotocol.io)
-- [Python SDK GitHub repository](https://github.com/modelcontextprotocol/python-sdk)
-- [Officially supported servers](https://github.com/modelcontextprotocol/servers)
-- [MCP Core Architecture](https://modelcontextprotocol.io/docs/concepts/architecture)
+- [مستندات پروتکل زمینه مدل] (https://modelContextProtocol.io)
+- [مشخصات پروتکل متن مدل] (https://spec.modelContextProtocol.io)
+- [مخزن Python SDK Github] (https://github.com/modelContextProtocol/python-sdk)
+- [سرورهای رسمی پشتیبانی شده] (https://github.com/modelcontextprotocol/servers)
+- [معماری هسته MCP] (https://modelContextProtocol.io/docs/concepts/architecture)

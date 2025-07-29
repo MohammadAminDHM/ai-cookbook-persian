@@ -1,172 +1,172 @@
-# How to Build Long-Term Memory for AI Agents with mem0
+# نحوه ساخت حافظه بلند مدت برای عوامل AI با MEM0
 
-## Quick Start
-1. Create a venv with Python 3.11+
-2. Install requirements
-3. Run code examples
-4. Run `docker compose up -d` before running the example in the `oss` folder
+## شروع سریع
+1. یک Venv با Python 3.11+ ایجاد کنید
+2. الزامات را نصب کنید
+3. نمونه های کد را اجرا کنید
+4. قبل از اجرای مثال در پوشه `oss" ، docker را اجرا کنید.
 
-## What is mem0?
+## mem0 چیست؟
 
-Mem0 is a memory architecture that enables AI agents to maintain coherent, contextually rich conversations over extended periods. Unlike traditional approaches that struggle with fixed context windows, Mem0 intelligently extracts, consolidates, and retrieves only the most salient information from conversations.
+MEM0 یک معماری حافظه است که عوامل هوش مصنوعی را قادر می سازد مکالمات منسجم و غنی از نظر متنی را در دوره های طولانی حفظ کنند.بر خلاف رویکردهای سنتی که با ویندوزهای زمینه ثابت مبارزه می کنند ، MEM0 به طور هوشمندانه استخراج ، ادغام و بازیابی فقط برجسته ترین اطلاعات از مکالمات را بازیابی می کند.
 
-Learn more at: https://mem0.ai/research
+بیشتر بدانید در: https://mem0.ai/research
 
-### Key Features
+### ویژگی های کلیدی
 
-- **Two-Phase Memory Pipeline**: Extraction phase captures key facts from conversations, while the Update phase intelligently manages the knowledge base
-- **Selective Memory Formation**: Stores only critical information rather than entire conversation chunks
-- **Intelligent Operations**: Automatically determines whether to add, update, or delete memories
-- **Efficient Retrieval**: Uses vector embeddings to quickly find relevant memories
-- **Graph-Enhanced Option**: Mem0ᵍ variant represents memories as a directed labeled graph for complex relational reasoning
+- ** خط لوله حافظه دو فاز **: فاز استخراج حقایق کلیدی را از مکالمات ضبط می کند ، در حالی که مرحله بروزرسانی هوشمندانه پایگاه دانش را مدیریت می کند
+- ** تشکیل حافظه انتخابی **: فقط اطلاعات مهم را به جای کل بخش های مکالمه ذخیره می کند
+- ** عملیات هوشمند **: به طور خودکار تعیین می کند که آیا می توانید خاطرات را اضافه کنید ، به روز کنید یا حذف کنید
+- ** بازیابی کارآمد **: از تعبیهات بردار برای یافتن سریع خاطرات مربوطه استفاده می کند
+- ** گزینه پیشرفته نمودار **: نوع MEM0ᵍ خاطرات را به عنوان یک نمودار با برچسب کارگردانی برای استدلال رابطه پیچیده نشان می دهد
 
-### Performance Benefits
+### مزایای عملکرد
 
-- 26% higher accuracy compared to OpenAI's memory system
-- 91% lower latency than full-context approaches
-- 90% token savings, making it cost-effective at scale
+- 26 ٪ دقت بالاتر در مقایسه با سیستم حافظه OpenAi
+- 91 ٪ تأخیر پایین تر از رویکردهای کامل متن
+- 90 ٪ پس انداز توکن ، و آن را در مقیاس مقرون به صرفه می کند
 
-Mem0 makes persistent, structured memory both powerful and practical, enabling AI assistants that truly remember user preferences, adapt to evolving contexts, and maintain coherent interactions across multiple sessions.
+MEM0 حافظه پایدار و ساختاری را هم قدرتمند و هم عملی ایجاد می کند ، و دستیاران هوش مصنوعی را که واقعاً ترجیحات کاربر را به خاطر می آورند ، سازگار با زمینه های در حال تحول و حفظ تعامل منسجم در چندین جلسه می کند.
 
-## Core Components
+## مؤلفه های اصلی
 
-### Prompts
+### اعلان ها
 
-You can view the core prompts that power Mem0's memory system here: [prompts.py](https://github.com/mem0ai/mem0/blob/main/mem0/configs/prompts.py)
+شما می توانید موارد اصلی را که سیستم حافظه Power Mem0 را در اینجا مشاهده می کنید مشاهده کنید: [prompts.py] (https://github.com/mem0ai/mem0/blob/main/mem0/configs/prompts.py)
 
-1. **MEMORY_ANSWER_PROMPT**: Guides the system to answer questions based on retrieved memories, ensuring responses are accurate, concise, and always helpful even when relevant memories aren't found.
+1. ** memory_answer_prompt **: سیستم را راهنمایی می کند تا به سؤالات بر اساس خاطرات بازیابی پاسخ دهد ، اطمینان حاصل شود که پاسخ ها حتی در صورت یافتن خاطرات مربوطه ، دقیق ، مختصر و همیشه مفید هستند.
 
-2. **FACT_RETRIEVAL_PROMPT**: The extraction phase prompt that extracts structured facts from conversations. It identifies personal preferences, details, plans, activities, health information, and professional details from conversations, organizing them into a JSON list format.
+2. ** FACT_RETRIEVAL_PROMPT **: فاز استخراج که حقایق ساختاری را از مکالمات استخراج می کند.این برنامه ترجیحات شخصی ، جزئیات ، برنامه ها ، فعالیت ها ، اطلاعات بهداشتی و جزئیات حرفه ای را از مکالمات ، سازماندهی آنها در قالب لیست JSON مشخص می کند.
 
-3. **DEFAULT_UPDATE_MEMORY_PROMPT**: Handles the update phase, showing how the system manages memory through four operations:
-   - ADD: Creates new memory entries with new IDs
-   - UPDATE: Modifies existing memories while preserving IDs
-   - DELETE: Removes contradicted memories
-   - NONE: Makes no changes when information is already present
+3. ** DEFAULT_UPDATE_MEMORY_PROMPT **: مرحله بروزرسانی را کنترل می کند ، نشان می دهد که چگونه سیستم حافظه را از طریق چهار عملیات مدیریت می کند:
+- افزودن: ورودی های جدید حافظه را با شناسه های جدید ایجاد می کند
+- بروزرسانی: ضمن حفظ شناسه خاطرات موجود را اصلاح می کند
+- حذف: خاطرات متناقض را حذف می کند
+- هیچ: در صورت وجود اطلاعات هیچ تغییری ایجاد نمی کند
 
-4. **PROCEDURAL_MEMORY_SYSTEM_PROMPT**: Creates comprehensive summaries of agent-human interactions with structured metadata.
+4. ** Procedural_Memory_System_Prompt **: خلاصه های جامع از تعامل عامل و انسان با ابرداده ساختاری را ایجاد می کند.
 
-The `get_update_memory_messages()` function combines retrieved memories with new facts, applying the update logic to maintain a coherent, non-redundant memory store.
+تابع `get_update_memory_messages ()` خاطرات بازیابی شده را با حقایق جدید ترکیب می کند و از منطق بروزرسانی برای حفظ یک فروشگاه حافظه منسجم و غیرقانونی استفاده می کند.
 
-### Configuration
+### پیکربندی
 
-Mem0 offers extensive configuration options to customize its behavior according to your needs. These configurations span across different components like vector stores, language models, embedders, and graph stores.
+MEM0 گزینه های پیکربندی گسترده ای را برای سفارشی کردن رفتار خود با توجه به نیاز شما ارائه می دهد.این تنظیمات در اجزای مختلف مانند فروشگاه های بردار ، مدل های زبان ، تعبیه کننده و فروشگاه های نمودار قرار دارد.
 
-#### Complete Configuration Example
+#### مثال کامل پیکربندی
 
-```python
-# Complete config
-config = {
-    "vector_store": {
-        "provider": "qdrant",
-        "config": {"host": "localhost", "port": 6333},
-    },
-    "llm": {
-        "provider": "openai",
-        "config": {"api_key": "your-api-key", "model": "gpt-4"},
-    },
-    "embedder": {
-        "provider": "openai",
-        "config": {"api_key": "your-api-key", "model": "text-embedding-3-small"},
-    },
-    "graph_store": {
-        "provider": "neo4j",
-        "config": {
-            "url": "neo4j+s://your-instance",
-            "username": "neo4j",
-            "password": "password",
-        },
-    },
-    "history_db_path": "/path/to/history.db",
-    "version": "v1.1",
-    "custom_fact_extraction_prompt": "Optional custom prompt for fact extraction for memory",
-    "custom_update_memory_prompt": "Optional custom prompt for update memory",
+`` `پایتون
+# پیکربندی کامل
+پیکربندی = {
+"Vector_Store": {
+"ارائه دهنده": "Qdrant" ،
+"پیکربندی": {"میزبان": "localhost" ، "پورت": 6333}
+} ،
+"llm": {
+"ارائه دهنده": "Openai" ،
+"پیکربندی": {"api_key": "your-api-key" ، "مدل": "gpt-4"} ،
+} ،
+"تعبیه": {
+"ارائه دهنده": "Openai" ،
+"پیکربندی": {"api_key": "your-api-key" ، "مدل": "متن-ام تعبیه شده -3-کوچک"} ،
+} ،
+"Graph_store": {
+"ارائه دهنده": "neo4j" ،
+"پیکربندی": {
+"url": "neo4j+s: // your-instance" ،
+"نام کاربری": "neo4j" ،
+"رمز عبور": "رمز عبور" ،
+} ،
+} ،
+"History_db_path": "/path/to/history.db" ،
+"نسخه": "v1.1" ،
+"custom_fact_extraction_prompt": "سریع سفارشی اختیاری برای استخراج واقعیت برای حافظه" ،
+"custom_update_memory_prompt": "سریع سریع سفارشی FOR به روزرسانی حافظه "،
 }
-```
+`` `
 
-You can then configure the Memory via:
+سپس می توانید حافظه را از طریق:
 
-```python
-config = {
-    "vector_store": {
-        "provider": "qdrant",
-        "config": {
-            "host": "localhost",
-            "port": 6333,
-        },
-    },
+`` `پایتون
+پیکربندی = {
+"Vector_Store": {
+"ارائه دهنده": "Qdrant" ،
+"پیکربندی": {
+"میزبان": "localhost" ،
+"بندر": 6333 ،
+} ،
+} ،
 }
-m = Memory.from_config(config)
-```
+M = Memory.from_config (پیکربندی)
+`` `
 
-### Supported Components
+### مؤلفه های پشتیبانی شده
 
-#### LLMs
-Mem0 includes built-in support for various popular large language models. Memory can utilize the LLM provided by the user, ensuring efficient use for specific needs.
+#### llms
+MEM0 شامل پشتیبانی داخلی برای مدل های مختلف زبان بزرگ محبوب است.حافظه می تواند از LLM ارائه شده توسط کاربر استفاده کند و از استفاده کارآمد برای نیازهای خاص اطمینان حاصل کند.
 
-[Learn more about LLM support](https://docs.mem0.ai/components/llms/overview)
+[در مورد پشتیبانی LLM بیشتر بدانید] (https://docs.mem0.ai/compentents/llms/overview)
 
-#### Vector Databases
-Mem0 includes built-in support for various popular databases. Memory can utilize the database provided by the user, ensuring efficient use for specific needs.
+پایگاه داده های بردار ####
+MEM0 شامل پشتیبانی داخلی برای پایگاه داده های مختلف محبوب است.حافظه می تواند از پایگاه داده ارائه شده توسط کاربر استفاده کند و از استفاده کارآمد برای نیازهای خاص اطمینان حاصل کند.
 
-[Learn more about Vector Database support](https://docs.mem0.ai/components/vectordbs/overview)
+[در مورد پشتیبانی از پایگاه داده بردار بیشتر بدانید] (https://docs.mem0.ai/compentents/vectords/overview)
 
 
-## How It Works
+## چگونه کار می کند
 
-### 1. Adding Memories
+### 1. اضافه کردن خاطرات
 
-When you call `memory.add()`, here's what happens:
+هنگامی که شما با `memory.add ()` `تماس می گیرید ، در اینجا اتفاق می افتد:
 
-```python
-# Basic usage
-memory.add(messages, user_id="user123")
-```
+`` `پایتون
+# استفاده اساسی
+memory.add (پیام ها ، user_id = "user123")
+`` `
 
-The process follows these steps:
+این روند از این مراحل پیروی می کند:
 
-1. **Message Parsing**
-   - Messages are parsed into a format suitable for processing
-   - System messages are filtered out
-   - Source: `mem0/memory/main.py`
+1. ** تجزیه پیام **
+- پیام ها به یک قالب مناسب برای پردازش تجزیه می شوند
+- پیام های سیستم فیلتر می شوند
+- منبع: `mem0/حافظه/main.py`
 
-2. **Fact Extraction**
-   - The system uses an LLM to extract key facts from the conversation
-   - Facts are structured into a JSON format
-   - Source: `mem0/memory/main.py`
+2. ** استخراج واقعیت **
+- سیستم از LLM برای استخراج حقایق کلیدی از مکالمه استفاده می کند
+- حقایق در قالب JSON ساخته شده اند
+- منبع: `mem0/حافظه/main.py`
 
-3. **Memory Management**
-   - New facts are compared with existing memories
-   - The system decides whether to:
-     - ADD new memories
-     - UPDATE existing memories
-     - DELETE contradicted memories
-     - Do nothing (NONE)
-   - Source: `mem0/memory/main.py`
+3. ** مدیریت حافظه **
+- حقایق جدید با خاطرات موجود مقایسه می شوند
+- سیستم تصمیم می گیرد که آیا:
+- خاطرات جدید اضافه کنید
+- خاطرات موجود را به روز کنید
+- خاطرات متناقض را حذف کنید
+- هیچ کاری نکنید (هیچ)
+- منبع: `mem0/حافظه/main.py`
 
-4. **Storage**
-   - Memories are stored in a vector database for semantic search
-   - Optional graph storage for relational information
-   - History tracking for all changes
+4. ** ذخیره سازی **
+- خاطرات برای جستجوی معنایی در یک پایگاه داده بردار ذخیره می شوند
+- ذخیره سازی نمودار اختیاری برای اطلاعات رابطه ای
+- ردیابی تاریخ برای همه تغییرات
 
-### 2. Retrieving Memories
+### 2. بازیابی خاطرات
 
-Memories can be retrieved in three ways:
+خاطرات را می توان از سه طریق بازیابی کرد:
 
-```python
-# Get by ID
-memory.get(memory_id)
+`` `پایتون
+# با شناسه دریافت کنید
+Memory.get (Memory_ID)
 
-# Search semantically
-memory.search(query="What do you know about me?", user_id="user123")
+# معنایی جستجو
+Memory.Search (query = "شما در مورد من چه می دانید؟" ، user_id = "user123")
 
-# Get all memories
-memory.get_all(user_id="user123")
-```
+# همه خاطرات را بدست آورید
+memory.get_all (user_id = "user123")
+`` `
 
-## Key Takeaways
+## غذای کلیدی
 
-1. **Intelligent Storage**: Don't just store raw conversations - extract and store meaningful facts
-2. **Semantic Search**: Use embeddings to enable natural language search
-3. **Memory Management**: Implement a system to handle updates and contradictions
-4. **History Tracking**: Keep track of changes for debugging and auditing
+1. ** ذخیره هوشمند **: فقط مکالمات خام را ذخیره نکنید - واقعیت های معنی دار را استخراج و ذخیره کنید
+2. ** جستجوی معنایی **: برای فعال کردن جستجوی زبان طبیعی از تعبیهات استفاده کنید
+3. ** مدیریت حافظه **: یک سیستم را برای رسیدگی به به روزرسانی ها و تضادها پیاده سازی کنید
+4. ** ردیابی تاریخ **: تغییرات را برای اشکال زدایی و حسابرسی پیگیری کنید

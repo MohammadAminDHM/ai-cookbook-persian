@@ -1,171 +1,171 @@
-# Building Effective LLM Workflows in Pure Python
+# ساختمان مؤثر LLM در پایتون خالص
 
-This repository contains practical patterns and examples for building effective LLM-powered systems. Based on real-world implementations and lessons learned from working with production systems, these patterns focus on simplicity and composability rather than complex frameworks.
+این مخزن حاوی الگوهای عملی و نمونه هایی برای ساخت سیستم های مؤثر LLM است.این الگوهای بر اساس پیاده سازی های دنیای واقعی و درسهای آموخته شده از کار با سیستم های تولید ، به جای چارچوب های پیچیده ، بر سادگی و ترکیب پذیری تمرکز می کنند.
 
-Whether you're building autonomous agents or structured workflows, you'll find proven patterns that can be implemented with just a few lines of code. Each pattern is illustrated with practical examples and diagrams to help you understand when and how to apply them effectively.
+این که آیا شما در حال ساختن عوامل خودمختار هستید یا گردش کار ساختاری ، الگوهای اثبات شده ای را پیدا خواهید کرد که فقط با چند خط کد قابل اجرا هستند.هر الگوی با نمونه ها و نمودارهای عملی نشان داده شده است تا به شما در درک اینکه چه موقع و چگونه می توانید آنها را به طور مؤثر اعمال کنید ، نشان داده شده است.
 
-Learn more about the theory and practice behind these patterns:
-- [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents) - Anthropic's blog post
-- [Practical LLM Patterns Video Guide](https://youtu.be/tx5OapbK-8A) - Video walkthrough of key concepts by Dave Ebbelaar
+در مورد تئوری و تمرین در پشت این الگوهای بیشتر بدانید:
+- [ساختمان عوامل مؤثر] (https://www.anthropic.com/research/building-effice-agents)- پست وبلاگ Anthropic
+- [راهنمای ویدئویی الگوهای عملی LLM] (https://youtu.be/tx5oapbk-8a) - پیاده روی ویدیویی مفاهیم کلیدی توسط دیو ابربلاار
 
-## Table of Content
+## جدول محتوا
 
-In this tutorial, we’ll cover everything you need to start building AI agents in pure Python. We’ll start with the essential building blocks and then dive into workflow patterns for more reliable systems. To follow along, basic Python skills are recommended, along with familiarity with the OpenAI SDK and an API key. I highly recommend cloning the GitHub repository so you can work through the code step by step. Watch me go through it first, then try it yourself to reinforce your understanding. I move quickly to cover a lot in 45 minutes, but you can always pause, rewind, or ask ChatGPT for help.
+در این آموزش ، ما همه چیزهایی را که لازم دارید برای شروع به ساختن عوامل هوش مصنوعی در پایتون خالص پوشش خواهیم داد.ما با بلوک های ساختمانی ضروری شروع خواهیم کرد و سپس برای سیستم های قابل اطمینان تر به الگوهای گردش کار شیرجه می شویم.برای دنبال کردن ، مهارت های اساسی پایتون به همراه آشنایی با OpenAi SDK و یک کلید API توصیه می شود.من به شدت کلون کردن مخزن GitHub را توصیه می کنم تا بتوانید از طریق کد گام به گام کار کنید.من را ابتدا از آن عبور کنید ، سپس خودتان آن را امتحان کنید تا درک خود را تقویت کنید.من به سرعت حرکت می کنم تا در 45 دقیقه مقدار زیادی را بپوشانم ، اما شما همیشه می توانید مکث کنید ، به عقب برگردید یا از Chatgpt کمک بخواهید.
 
-Part 1: Building block: The augmented LLM
+قسمت 1: بلوک ساختمان: LLM افزوده
 
-- Basic LLM calls
-- Structured output
-- Tool use
-- Retrieval
-  
-Part 2: Workflow patterns to build AI systems
+- تماسهای اساسی LLM
+- خروجی ساختاری
+- استفاده از ابزار
+- بازیابی
 
-- Prompt chaining
-- Routing
-- Parallelization
+قسمت 2: الگوهای گردش کار برای ساخت سیستم های AI
 
-## Workflow Patterns
+- زنجیر سریع
+- مسیریابی
+- موازی سازی
 
-### Prompt Chaining
+## الگوهای گردش کار
 
-Prompt chaining is a powerful pattern that breaks down complex AI tasks into a sequence of smaller, more focused steps. Each step in the chain processes the output from the previous step, allowing for better control, validation, and reliability.
+### زنجیر سریع
 
-#### Calendar Assistant Example
+زنجیره سریع الگوی قدرتمندی است که وظایف پیچیده AI را به دنباله ای از مراحل کوچکتر و متمرکز تر تجزیه می کند.هر مرحله در زنجیره خروجی از مرحله قبلی را پردازش می کند و امکان کنترل بهتر ، اعتبار سنجی و قابلیت اطمینان را فراهم می کند.
 
-Our calendar assistant demonstrates a 3-step prompt chain with validation:
+#### تقویم دستیار مثال
 
-```mermaid
-graph LR
-    A[User Input] --> B[LLM 1: Extract]
-    B --> C{Gate Check}
-    C -->|Pass| D[LLM 2: Parse Details]
-    C -->|Fail| E[Exit]
-    D --> F[LLM 3: Generate Confirmation]
-    F --> G[Final Output]
-```
+دستیار تقویم ما یک زنجیره سریع 3 مرحله ای را با اعتبارسنجی نشان می دهد:
 
-#### Step 1: Extract & Validate
+`` `پری دریایی
+نمودار LR
+A [ورودی کاربر] -> B [LLM 1: عصاره]
+B -> C {Check Check}
+ج -> | پاس |D [LLM 2: جزئیات تجزیه]
+ج -> | شکست |E [خروج]
+D -> F [LLM 3: تأیید تولید]
+f -> g [خروجی نهایی]
+`` `
 
-- Determines if the input is actually a calendar request
-- Provides a confidence score
-- Acts as an initial filter to prevent processing invalid requests
+#### مرحله 1: عصاره و اعتبارسنجی
 
-#### Step 2: Parse Details
+- تعیین می کند که آیا ورودی در واقع یک درخواست تقویم است
+- نمره اطمینان را ارائه می دهد
+- برای جلوگیری از پردازش درخواست های نامعتبر به عنوان یک فیلتر اولیه عمل می کند
 
-- Extracts specific calendar information
-- Structures the data (date, time, participants, etc.)
-- Converts natural language to structured data
+#### مرحله 2: جزئیات تجزیه
 
-#### Step 3: Generate Confirmation
+- اطلاعات تقویم خاص را استخراج می کند
+- ساختار داده ها (تاریخ ، زمان ، شرکت کنندگان و غیره)
+- زبان طبیعی را به داده های ساخت یافته تبدیل می کند
 
-- Creates a user-friendly confirmation message
-- Optionally generates calendar links
-- Provides the final user response
+#### مرحله 3: تأیید ایجاد کنید
 
-### Routing
+- یک پیام تأیید کاربر پسند ایجاد می کند
+- به صورت اختیاری پیوندهای تقویم ایجاد می کند
+- پاسخ نهایی کاربر را ارائه می دهد
 
-Routing is a pattern that directs different types of requests to specialized handlers. This allows for optimized processing of distinct request types while maintaining a clean separation of concerns.
+### مسیریابی
 
-#### Calendar Assistant Example
+مسیریابی الگویی است که انواع مختلفی از درخواست ها را به دستگیرندگان تخصصی هدایت می کند.این امر امکان پردازش بهینه شده از انواع درخواست مجزا را در حالی که جداسازی تمیز نگرانی ها را فراهم می کند ، امکان پذیر است.
 
-Our calendar assistant demonstrates routing between new event creation and event modification:
+#### تقویم دستیار مثال
 
-```mermaid
-graph LR
-    A[User Input] --> B[LLM Router]
-    B --> C{Route}
-    C -->|New Event| D[New Event Handler]
-    C -->|Modify Event| E[Modify Event Handler]
-    C -->|Other| F[Exit]
-    D --> G[Response]
-    E --> G
-```
+دستیار تقویم ما مسیریابی بین ایجاد رویداد جدید و اصلاح رویداد را نشان می دهد:
 
-#### Router
+`` `پری دریایی
+نمودار LR
+A [ورودی کاربر] -> B [LLM روتر]
+B -> C {مسیر}
+ج -> | رویداد جدید |D [کنترل کننده رویداد جدید]
+ج -> | اصلاح رویداد |E [اصلاح کننده رویداد]
+ج -> | دیگر |f [خروج]
+D -> G [پاسخ]
+E -> g
+`` `
 
-- Classifies the request type (new/modify event)
-- Provides confidence scoring
-- Cleans and standardizes the input
+#### روتر
 
-#### Specialized Handlers
+- نوع درخواست را طبقه بندی می کند (رویداد جدید/اصلاح)
+- امتیاز دهی اعتماد به نفس را فراهم می کند
+- ورودی را تمیز و استاندارد می کند
 
-- New Event Handler: Creates calendar events
-- Modify Event Handler: Updates existing events
-- Each optimized for its specific task
+#### دستگیرندگان تخصصی
 
-### Parallelization
+- کنترل کننده رویداد جدید: رویدادهای تقویم را ایجاد می کند
+- اصلاح کننده رویداد: به روزرسانی رویدادهای موجود
+- هر یک برای کار خاص خود بهینه شده است
 
-Parallelization runs multiple LLM calls concurrently to validate or analyze different aspects of a request simultaneously.
+### موازی سازی
 
-#### Calendar Assistant Example
+موازی سازی چندین تماس LLM را به طور همزمان برای اعتبارسنجی یا تجزیه و تحلیل جنبه های مختلف یک درخواست به طور همزمان اجرا می کند.
 
-Our calendar assistant implements parallel validation guardrails:
+#### تقویم دستیار مثال
 
-```mermaid
-graph LR
-    A[User Input] --> B[Calendar Check]
-    A --> C[Security Check]
-    B --> D{Aggregate}
-    C --> D
-    D -->|Valid| E[Continue]
-    D -->|Invalid| F[Exit]
-```
+دستیار تقویم ما نگهبان های اعتبار سنجی موازی را پیاده سازی می کند:
 
-#### Parallel Checks
+`` `پری دریایی
+نمودار lحرف
+A [ورودی کاربر] -> B [بررسی تقویم]
+A -> C [بررسی امنیتی]
+B -> D {جمع}
+ج -> D
+D -> | معتبر |E [ادامه]
+D -> | نامعتبر |f [خروج]
+`` `
 
-- Calendar Validation: Verifies valid calendar request
-- Security Check: Screens for prompt injection
-- Run simultaneously for better performance
+#### بررسی های موازی
 
-#### Aggregation
+- اعتبار سنجی تقویم: درخواست تقویم معتبر را تأیید می کند
+- بررسی امنیتی: صفحه نمایش برای تزریق سریع
+- همزمان برای عملکرد بهتر اجرا کنید
 
-- Combines validation results
-- Applies validation rules
-- Makes final accept/reject decision
+#### تجمع
 
-### Orchestrator-Workers
+- نتایج اعتبار سنجی را ترکیب می کند
+- قوانین اعتبار سنجی را اعمال می کند
+- تصمیم نهایی را قبول می کند/رد می کند
 
-The orchestrator-workers pattern uses a central LLM to dynamically analyze tasks, coordinate specialized workers, and synthesize their results. This creates a flexible system that can adapt to different types of requests while maintaining specialized processing.
+### کارگران ارکستر
 
-#### Blog Writing Example
+الگوی ارکستراتور کارگران از LLM مرکزی برای تجزیه و تحلیل پویا وظایف ، هماهنگی کارگران تخصصی و سنتز نتایج آنها استفاده می کند.این یک سیستم انعطاف پذیر ایجاد می کند که می تواند ضمن حفظ پردازش تخصصی ، با انواع مختلف درخواست ها سازگار شود.
 
-Our blog writing system demonstrates the orchestrator pattern for content creation:
+#### مثال نوشتن وبلاگ
 
-```mermaid
-graph LR
-    A[Topic Input] --> B[Orchestrator]
-    B --> C[Planning Phase]
-    C --> D[Writing Phase]
-    D --> E[Review Phase]
-    style D fill:#f9f,stroke:#333,stroke-width:2px
-```
+سیستم نوشتن وبلاگ ما الگوی ارکستر را برای ایجاد محتوا نشان می دهد:
 
-#### Orchestrator
+`` `پری دریایی
+نمودار LR
+A [ورودی موضوع] -> B [Orchestrator]
+B -> C [مرحله برنامه ریزی]
+ج -> D [مرحله نوشتن]
+D -> E [مرحله بررسی]
+Style D Fill:#F9F ، سکته مغزی:#333 ، Width Width: 2px
+`` `
 
-- Analyzes the blog topic and requirements
-- Creates structured content plan
-- Coordinates section writing
-- Manages content flow and cohesion
+#### ارکستر
 
-#### Planning Phase
+- موضوع و الزامات وبلاگ را تجزیه و تحلیل می کند
+- برنامه محتوای ساختاری را ایجاد می کند
+- نوشتن بخش هماهنگی
+- جریان و انسجام محتوا را مدیریت می کند
 
-- Analyzes topic complexity
-- Identifies target audience
-- Breaks content into logical sections
-- Assigns word count per section
-- Defines writing style guidelines
+#### مرحله برنامه ریزی
 
-#### Writing Phase
+- پیچیدگی موضوع را تجزیه و تحلیل می کند
+- مخاطبان هدف را مشخص می کند
+- محتوا را به بخش های منطقی می شکند
+- تعداد کلمات را در هر بخش اختصاص می دهد
+- دستورالعمل های سبک نوشتن را تعریف می کند
 
-- Specialized workers write individual sections
-- Each section maintains context from previous sections
-- Follows style and length guidelines
-- Captures key points for each section
+#### مرحله نوشتن
 
-#### Review Phase
+- کارگران تخصصی بخش های فردی را می نویسند
+- هر بخش زمینه را از بخش های قبلی حفظ می کند
+- از دستورالعمل های سبک و طول پیروی می کند
+- برای هر بخش نکات کلیدی را ضبط می کند
 
-- Evaluates overall cohesion
-- Scores content flow (0-1)
-- Suggests section-specific improvements
-- Produces final polished version
+#### مرحله مرور
+
+- انسجام کلی را ارزیابی می کند
+- نمرات جریان محتوا (0-1)
+- پیشرفت های خاص بخش را پیشنهاد می کند
+- نسخه نهایی جلا تولید می کند

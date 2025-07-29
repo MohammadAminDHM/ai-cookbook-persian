@@ -1,48 +1,48 @@
-# OpenAI Responses API
+# پاسخهای Openai API
 
-## What we will cover
+## آنچه را پوشش خواهیم داد
 
-1. Introduction
-2. Text prompting
-3. Conversation states
-4. Function calling
-5. Structured output
-6. Web search
-7. Reasoning
-8. File search
+1. مقدمه
+2. متن ارسال شده
+3. مکالمه ایالات
+4. تماس با عملکرد
+5. خروجی ساختاری
+6. جستجوی وب
+7 استدلال
+8. جستجوی پرونده
 
-## Most important things to know
+## مهمترین چیزهایی که باید بدانید
 
-1. **Backward Compatibility**: The Responses API is a superset of Chat Completions - everything you can do with Chat Completions can be done with Responses API, plus additional features.
+1. ** سازگاری به عقب **: پاسخ API یک سوپراست از تکمیل گپ است - هر کاری که می توانید با تکمیل گپ انجام دهید با پاسخ API ، به علاوه ویژگی های اضافی انجام می شود.
 
-2. **Migration Timeline**: The Chat Completions API is not being deprecated and will continue to be supported indefinitely as an industry standard for building AI applications, while the Assistants API (not Chat Completions) is the one planned for eventual deprecation in 2026.
+2. ** جدول زمانی مهاجرت **: API تکمیل چت در حال کاهش نیست و همچنان به عنوان یک استاندارد صنعت برای ساخت برنامه های هوش مصنوعی به طور نامحدود پشتیبانی می شود ، در حالی که API دستیاران (تکمیل گپ نیست) برنامه ریزی شده برای استهلاک نهایی در سال 2026 است.
 
 
-3. **Key New Features**:
-   - Simplified interface for different interaction types
-   - Native support for web search capabilities
-   - A new `developer` role you can use
-   - Improved support for reasoning models
-   - Built-in file/vector search functionality
-   - Simplified conversation state management
+3. ** ویژگی های جدید کلیدی **:
+- رابط ساده برای انواع مختلف تعامل
+- پشتیبانی بومی برای قابلیت های جستجوی وب
+- نقش جدید "توسعه دهنده" که می توانید استفاده کنید
+- پشتیبانی بهبود یافته برای مدل های استدلال
+- قابلیت جستجوی فایل/وکتور داخلی
+- مدیریت دولت مکالمه ساده
 
-4. **Available Tools**:
-   - **Web search**: Include data from the Internet in model response generation
-   - **File search**: Search the contents of uploaded files for context when generating a response
-   - **Computer use**: Create agentic workflows that enable a model to control a computer interface
-   - **Function calling**: Enable the model to call custom code that you define, giving it access to additional data and capabilities
+4. ** ابزارهای موجود **:
+- ** جستجوی وب **: داده های اینترنت را در تولید پاسخ مدل درج کنید
+- ** جستجوی پرونده **: هنگام تولید یک پاسخ ، محتوای پرونده های بارگذاری شده را برای زمینه جستجو کنید
+- ** استفاده از رایانه **: گردش کار عامل ایجاد کنید که یک مدل را قادر به کنترل رابط رایانه می کند
+- ** فراخوانی عملکرد **: مدل را فعال کنید تا با کد سفارشی که تعریف می کنید تماس بگیرید و به آن دسترسی به داده ها و قابلیت های اضافی می دهد
 
-5. **When to Migrate**:
-   - For new applications: Start with Responses API to be future-proof
-   - For existing applications: Begin planning migration, but no immediate urgency
-   - Test the new API in parallel with existing implementations
+5. ** چه موقع مهاجرت کنید **:
+- برای برنامه های جدید: با پاسخ های API شروع کنید تا ضد آینده باشد
+- برای برنامه های موجود: برنامه ریزی مهاجرت را شروع کنید ، اما فوری فوری نیست
+- API جدید را به موازات پیاده سازی های موجود آزمایش کنید
 
-6. **Implementation Considerations**:
-   - API structure changes but core AI engineering principles remain the same
-   - Features that previously required multiple API calls can now be done in single calls
-   - The fundamental patterns of retrieval, tools, and memory management still apply
+6. ** ملاحظات اجرای **:
+- ساختار API تغییر می کند اما اصول مهندسی اصلی AI یکسان است
+- ویژگی هایی که قبلاً به چندین تماس API نیاز داشتند اکنون می توانند در تماس های منفرد انجام شوند
+- الگوهای اساسی بازیابی ، ابزارها و مدیریت حافظه هنوز اعمال می شود
 
-7. **New Agent SDK**: OpenAI has released a new Agent SDK that will replace [Swarm](https://github.com/openai/swarm/tree/main). This provides a standardized way to build AI agents with the Responses API. Learn more at: https://platform.openai.com/docs/guides/agents
+7. ** عامل جدید SDK **: OpenAI یک عامل جدید SDK را منتشر کرده است که جایگزین [swarm] خواهد شد (https://github.com/openai/swarm/tree/main).این یک روش استاندارد برای ساخت عوامل هوش مصنوعی با API پاسخ ها را فراهم می کند.بیشتر بدانید در: https://platform.openai.com/docs/guides/agents
 
-8. **Documentation Resources**:
-   - Official OpenAI documentation: https://platform.openai.com/docs/api-reference/responses
+8. ** منابع مستندات **:
+- مستندات رسمی OpenAI: https://platform.openai.com/docs/api-reference/responses

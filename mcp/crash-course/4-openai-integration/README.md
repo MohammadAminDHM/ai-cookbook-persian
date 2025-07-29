@@ -1,76 +1,76 @@
-# OpenAI Integration with MCP
+# ادغام Openai با MCP
 
-This section demonstrates how to integrate the Model Context Protocol (MCP) with OpenAI's API to create a system where OpenAI can access and use tools provided by your MCP server.
+در این بخش نحوه ادغام پروتکل زمینه مدل (MCP) با API OpenAI برای ایجاد سیستمی که OpenAI می تواند به ابزارهای ارائه شده توسط سرور MCP شما دسترسی داشته باشد ، نشان می دهد.
 
-## Overview
+## بررسی اجمالی
 
-This example shows how to:
+این مثال نحوه:
 
-1. Create an MCP server that exposes a knowledge base tool
-2. Connect OpenAI to this MCP server
-3. Allow OpenAI to dynamically use the tools when responding to user queries
+1. یک سرور MCP ایجاد کنید که یک ابزار پایه دانش را در معرض دید خود قرار دهد
+2. OpenAi را به این سرور MCP وصل کنید
+3. اجازه دهید OpenAi هنگام پاسخ به نمایش داده های کاربر ، از ابزارها به صورت پویا استفاده کند
 
-## Connection Methods
+## روش اتصال
 
-This example uses the **stdio transport** for communication between the client and server, which means:
+این مثال از ** Stdio Transport ** برای برقراری ارتباط بین مشتری و سرور استفاده می کند ، به این معنی است که:
 
-- The client and server run in the same process
-- The client directly launches the server as a subprocess
-- No separate server process is needed
+- مشتری و سرور در همان فرآیند اجرا می شوند
+- مشتری مستقیماً سرور را به عنوان یک زیرمجموعه راه اندازی می کند
+- هیچ فرآیند سرور جداگانه ای لازم نیست
 
-If you want to split your client and server into separate applications (e.g., running the server on a different machine), you'll need to use the **SSE (Server-Sent Events) transport** instead. For details on setting up an SSE connection, see the [Simple Server Setup](../3-simple-server-setup) section.
+اگر می خواهید مشتری و سرور خود را به برنامه های جداگانه تقسیم کنید (به عنوان مثال ، اجرای سرور بر روی یک دستگاه دیگر) ، باید به جای آن از Transport ** SSE (رویدادهای سرور-SENT) استفاده کنید.برای جزئیات بیشتر در مورد تنظیم اتصال SSE ، به بخش [Simple Server Setup] (../ 3-Simple-Server-Server-Setup) مراجعه کنید.
 
-### Data Flow Explanation
+### توضیح جریان داده
 
-1. **User Query**: The user sends a query to the system (e.g., "What is our company's vacation policy?")
-2. **OpenAI API**: OpenAI receives the query and available tools from the MCP server
-3. **Tool Selection**: OpenAI decides which tools to use based on the query
-4. **MCP Client**: The client receives OpenAI's tool call request and forwards it to the MCP server
-5. **MCP Server**: The server executes the requested tool (e.g., retrieving knowledge base data)
-6. **Response Flow**: The tool result flows back through the MCP client to OpenAI
-7. **Final Response**: OpenAI generates a final response incorporating the tool data
+1. ** پرس و جو کاربر **: کاربر پرس و جو را به سیستم می فرستد (به عنوان مثال ، "سیاست تعطیلات شرکت ما چیست؟")
+2. ** OpenAi API **: OpenAI پرس و جو و ابزارهای موجود را از سرور MCP دریافت می کند
+3. ** انتخاب ابزار **: OpenAI تصمیم می گیرد که از چه ابزارهایی برای استفاده بر اساس پرس و جو استفاده کنید
+4. ** MCP Client **: مشتری درخواست تماس ابزار OpenAI را دریافت می کند و آن را به سرور MCP ارسال می کند
+5. ** سرور MCP **: سرور ابزار درخواست شده را اجرا می کند (به عنوان مثال ، بازیابی داده های پایه دانش)
+6. ** جریان پاسخ **: نتیجه ابزار از طریق مشتری MCP به OpenAI باز می گردد
+7. ** پاسخ نهایی **: OpenAI پاسخ نهایی را شامل داده های ابزار ایجاد می کند
 
-## How OpenAI Executes Tools
+## چگونه OpenAI ابزارها را اجرا می کند
 
-OpenAI's function calling mechanism works with MCP tools through these steps:
+مکانیسم فراخوانی عملکرد OpenAI با این مراحل با ابزارهای MCP کار می کند:
 
-1. **Tool Registration**: The MCP client converts MCP tools to OpenAI's function format
-2. **Tool Choice**: OpenAI decides which tools to use based on the user query
-3. **Tool Execution**: The MCP client executes the selected tools and returns results
-4. **Context Integration**: OpenAI incorporates the tool results into its response
+1. ** ثبت نام ابزار **: مشتری MCP ابزارهای MCP را به فرمت عملکرد OpenAi تبدیل می کند
+2. ** انتخاب ابزار **: OpenAI تصمیم می گیرد که از چه ابزارهایی برای استفاده بر اساس پرس و جو کاربر استفاده کنید
+3. ** اجرای ابزار **: مشتری MCP ابزارهای انتخاب شده را اجرا می کند و نتایج را باز می گرداند
+4. ** ادغام زمینه **: OpenAI نتایج ابزار را در پاسخ خود گنجانده است
 
-## The Role of MCP
+## نقش MCP
 
-MCP serves as a standardized bridge between AI models and your backend systems:
+MCP به عنوان یک پل استاندارد بین مدل های AI و سیستم های باطن شما عمل می کند:
 
-- **Standardization**: MCP provides a consistent interface for AI models to interact with tools
-- **Abstraction**: MCP abstracts away the complexity of your backend systems
-- **Security**: MCP allows you to control exactly what tools and data are exposed to AI models
-- **Flexibility**: You can change your backend implementation without changing the AI integration
+- ** استاندارد سازی **: MCP یک رابط سازگار برای مدل های AI برای تعامل با ابزارها فراهم می کند
+- ** انتزاع **: MCP پیچیدگی سیستم های باطن شما را از بین می برد
+- ** امنیت **: MCP به شما امکان می دهد دقیقاً آنچه را که ابزارها و داده ها در معرض مدل های AI قرار دارند ، کنترل کنید
+- ** انعطاف پذیری **: شما می توانید بدون تغییر ادغام AI ، اجرای پس زمینه خود را تغییر دهید
 
-## Implementation Details
+## جزئیات اجرای
 
-### Server (`server.py`)
+### سرور (`server.py`)
 
-The MCP server exposes a `get_knowledge_base` tool that retrieves Q&A pairs from a JSON file.
+سرور MCP یک ابزار `get_nydledge_base را در معرض نمایش قرار می دهد که جفت پرسش و پاسخ را از یک فایل JSON بازیابی می کند.
 
-### Client (`client.py`)
+### مشتری (`client.py`)
 
-The client:
+مشتری:
 
-1. Connects to the MCP server
-2. Converts MCP tools to OpenAI's function format
-3. Handles the communication between OpenAI and the MCP server
-4. Processes tool results and generates final responses
+1. به سرور MCP متصل می شود
+2. ابزارهای MCP را به فرمت عملکرد OpenAi تبدیل می کند
+3. ارتباط بین OpenAI و سرور MCP را کنترل می کند
+4. نتایج ابزار را پردازش می کند و پاسخ های نهایی را ایجاد می کند
 
-### Knowledge Base (`data/kb.json`)
+### پایگاه دانش (`data/kb.json`)
 
-Contains Q&A pairs about company policies that can be queried through the MCP server.
+حاوی جفت پرسش و پاسخ در مورد خط مشی های شرکت است که می تواند از طریق سرور MCP پرسیده شود.
 
-## Running the Example
+## اجرای مثال
 
-1. Ensure you have the required dependencies installed
-2. Set up your OpenAI API key in the `.env` file
-3. Run the client: `python client.py`
+1. اطمینان حاصل کنید که وابستگی های لازم را نصب کرده اید
+2. کلید API OpenAi خود را در پرونده `.env` تنظیم کنید
+3. مشتری را اجرا کنید: `python client.py`
 
-Note: With the stdio transport used in this example, you don't need to run the server separately as the client will automatically start it.
+توجه: با حمل و نقل STDIO که در این مثال استفاده شده است ، نیازی به اجرای سرور به طور جداگانه نیست زیرا مشتری به طور خودکار آن را شروع می کند.
